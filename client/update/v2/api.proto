@@ -1,0 +1,808 @@
+syntax = "proto3";
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "github.com/gengo/grpc-gateway/third_party/googleapis/google/api/annotations.proto";
+
+package update;
+
+service UpdateService {
+    // users
+    rpc CreateUser(CreateUserReq) returns (CreateUserResp) {
+        option (google.api.http) = {
+            post: "/users"
+            body: "*"
+        };
+    }
+    rpc ListUsers(ListUsersReq) returns (ListUsersResp) {
+        option (google.api.http) = {
+            get: "/users"
+        };
+    }
+    rpc GetUser(GetUserReq) returns (GetUserResp) {
+        option (google.api.http) = {
+            get: "/users/{username}"
+        };
+    }
+    rpc DeleteUser(DeleteUserReq) returns (DeleteUserResp) {
+        option (google.api.http) = {
+            delete: "/users/{username}"
+        };
+    }
+
+    rpc GenerateUserToken(GenerateUserTokenReq) returns (GenerateUserTokenResp) {
+        option (google.api.http) = {
+            put: "/users/{username}/token/new"
+            body: "*"
+        };
+    }
+
+    // applications
+    rpc CreateApp(CreateAppReq) returns (CreateAppResp) {
+        option (google.api.http) = {
+            post: "/apps"
+            body: "*"
+        };
+    }
+    rpc ListApps(ListAppsReq) returns (ListAppsResp) {
+        option (google.api.http) = {
+            get: "/apps"
+        };
+    }
+    rpc GetApp(GetAppReq) returns (GetAppResp) {
+        option (google.api.http) = {
+            get: "/apps/{id}"
+        };
+    }
+    rpc DeleteApp(DeleteAppReq) returns (DeleteAppResp) {
+        option (google.api.http) = {
+            delete: "/apps/{id}"
+        };
+    }
+
+    rpc SetAppLabel(SetAppLabelReq) returns (SetAppLabelResp) {
+        option (google.api.http) = {
+            patch: "/apps/{id}/label"
+            body: "label"
+        };
+    }
+    rpc SetAppDescription(SetAppDescriptionReq) returns (SetAppDescriptionResp) {
+        option (google.api.http) = {
+            patch: "/apps/{id}/description"
+            body: "description"
+        };
+    }
+
+    // channels
+    rpc CreateChannel(CreateChannelReq) returns (CreateChannelResp) {
+        option (google.api.http) = {
+            post: "/channels"
+            body: "*"
+        };
+    }
+    rpc ListChannels(ListChannelsReq) returns (ListChannelsResp) {
+        option (google.api.http) = {
+            get: "/channels/apps/{app_id}"
+        };
+    }
+    rpc GetChannel(GetChannelReq) returns (GetChannelResp) {
+        option (google.api.http) = {
+            get: "/channels/{id}"
+        };
+    }
+    rpc DeleteChannel(DeleteChannelReq) returns (DeleteChannelResp) {
+        option (google.api.http) = {
+            delete: "/channels/{id}"
+        };
+    }
+
+    rpc SetChannelLabel(SetChannelLabelReq) returns (SetChannelLabelResp) {
+        option (google.api.http) = {
+            patch: "/channels/{id}/label"
+            body: "label"
+        };
+    }
+    rpc SetChannelVersion(SetChannelVersionReq) returns (SetChannelVersionResp) {
+        option (google.api.http) = {
+            patch: "/channels/{id}/version"
+            body: "version"
+        };
+    }
+    rpc SetChannelPublished(SetChannelPublishReq) returns (SetChannelPublishResp) {
+        option (google.api.http) = {
+            patch: "/channels/{id}/published"
+            body: "publish"
+        };
+    }
+    rpc SetChannelUpstream(SetChannelUpstreamReq) returns (SetChannelUpstreamResp) {
+        option (google.api.http) = {
+            patch: "/channels/{id}/upstream"
+            body: "upstream_id"
+        };
+    }
+    rpc DeleteChannelUpstream(DeleteChannelUpstreamReq) returns (DeleteChannelUpstreamResp) {
+        option (google.api.http) = {
+            delete: "/channels/{id}/upstream"
+        };
+    }
+
+    // groups
+    rpc CreateGroup(CreateGroupReq) returns (CreateGroupResp) {
+        option (google.api.http) = {
+            post: "/apps/{app_id}/groups"
+            body: "*"
+        };
+    }
+    rpc ListGroups(ListGroupsReq) returns (ListGroupsResp) {
+        option (google.api.http) = {
+            get: "/apps/{app_id}/groups"
+        };
+    }
+    rpc GetGroup(GetGroupReq) returns (GetGroupResp) {
+        option (google.api.http) = {
+            get: "/apps/{app_id}/groups/{group_id}"
+        };
+    }
+    rpc DeleteGroup(DeleteGroupReq) returns (DeleteGroupResp) {
+        option (google.api.http) = {
+            delete: "/apps/{app_id}/groups/{group_id}"
+        };
+    }
+
+    rpc SetGroupChannelID(SetGroupChannelIDReq) returns (SetGroupChannelIDResp) {
+        option (google.api.http) = {
+            patch: "/apps/{app_id}/groups/{group_id}/channel_id"
+            body: "channel_id"
+        };
+    }
+    rpc SetGroupLabel(SetGroupLabelReq) returns (SetGroupLabelResp) {
+        option (google.api.http) = {
+            patch: "/apps/{app_id}/groups/{group_id}/label"
+            body: "label"
+        };
+    }
+    rpc SetGroupUpdateCount(SetGroupUpdateCountReq) returns (SetGroupUpdateCountResp) {
+        option (google.api.http) = {
+            patch: "/apps/{app_id}/groups/{group_id}/update_count"
+            body: "update_count"
+        };
+    }
+    rpc SetGroupUpdateInterval(SetGroupUpdateIntervalReq) returns (SetGroupUpdateIntervalResp) {
+        option (google.api.http) = {
+            patch: "/apps/{app_id}/groups/{group_id}/update_interval"
+            body: "update_interval"
+        };
+    }
+    rpc SetGroupUpdatesPausedState(SetGroupUpdatesPausedStateReq) returns (SetGroupUpdatesPausedStateResp) {
+        option (google.api.http) = {
+            patch: "/apps/{app_id}/groups/{group_id}/updates_paused"
+            body: "updates_paused"
+        };
+    }
+    rpc SetGroupUpdatePooling(SetGroupUpdatePoolingReq) returns (SetGroupUpdatePoolingResp) {
+        option (google.api.http) = {
+            patch: "/apps/{app_id}/groups/{group_id}/update_pooling"
+            body: "update_pooling"
+        };
+    }
+    rpc SetGroupOEMBlacklist(SetGroupOEMBlacklistReq) returns (SetGroupOEMBlacklistResp) {
+        option (google.api.http) = {
+            patch: "/apps/{app_id}/groups/{group_id}/oem_blacklist"
+            body: "oem_blacklist"
+        };
+    }
+
+    // rollup functions
+    rpc GetGroupVersionsRollup(GetGroupVersionsRollupReq) returns (GetGroupVersionsRollupResp) {
+        option (google.api.http) = {
+            put: "/apps/{app_id}/groups/{group_id}/requests/versions/{date_start}/{date_end}"
+            body: "*"
+        };
+    }
+    rpc GetGroupEventsRollup(GetGroupEventsRollupReq) returns (GetGroupEventsRollupResp) {
+        option (google.api.http) = {
+            put: "/apps/{app_id}/groups/{group_id}/requests/events/{date_start}/{date_end}"
+            body: "*"
+        };
+    }
+
+    // packages
+    rpc CreatePackage(CreatePackageReq) returns (CreatePackageResp) {
+        option (google.api.http) = {
+            post: "/apps/{app_id}/packages"
+            body: "*"
+        };
+    }
+    rpc ListPackages(ListPackagesReq) returns (ListPackagesResp) {
+        option (google.api.http) = {
+            get: "/apps/{app_id}/packages"
+        };
+    }
+    rpc GetPackage(GetPackageReq) returns (GetPackageResp) {
+        option (google.api.http) = {
+            get: "/apps/{app_id}/packages/{version}"
+        };
+    }
+    rpc DeletePackage(DeletePackageReq) returns (DeletePackageResp) {
+        option (google.api.http) = {
+            delete: "/apps/{app_id}/packages/{version}"
+        };
+    }
+
+    // upstreams
+    rpc CreateUpstream(CreateUpstreamReq) returns (CreateUpstreamResp) {
+        option (google.api.http) = {
+            post: "/upstreams"
+            body: "*"
+        };
+    }
+    rpc ListUpstreams(ListUpstreamsReq) returns (ListUpstreamsResp) {
+        option (google.api.http) = {
+            get: "/upstreams"
+        };
+    }
+    rpc GetUpstream(GetUpstreamReq) returns (GetUpstreamResp) {
+        option (google.api.http) = {
+            get: "/upstreams/{id}"
+        };
+    }
+    rpc DeleteUpstream(DeleteUpstreamReq) returns (DeleteUpstreamResp) {
+        option (google.api.http) = {
+            delete: "/upstreams/{id}"
+        };
+    }
+
+    rpc SyncUpstreams(SyncUpstreamsReq) returns (SyncUpstreamsResp) {
+        option (google.api.http) = {
+            post: "/upstreams/sync"
+        };
+    }
+    rpc SetUpstreamURL(SetUpstreamURLReq) returns (SetUpstreamURLResp) {
+        option (google.api.http) = {
+            patch: "/upstreams/{id}/url"
+            body: "url"
+        };
+    }
+    rpc SetUpstreamLabel(SetUpstreamLabelReq) returns (SetUpstreamLabelResp) {
+        option (google.api.http) = {
+            patch: "/upstreams/{id}/label"
+            body: "label"
+        };
+    }
+
+    // client requests
+    rpc GetClientHistory(GetClientHistoryReq) returns (GetClientHistoryResp) {
+        option (google.api.http) = {
+            get: "/client/{client_id}/history"
+        };
+    }
+
+    // client updates
+    rpc ListAppVersions(ListAppVersionsReq) returns (ListAppVersionsResp) {
+        option (google.api.http) = {
+            put: "/appversions"
+            body: "*"
+        };
+    }
+    rpc ListClientUpdates(ListClientUpdatesReq) returns (ListClientUpdatesResp) {
+        option (google.api.http) = {
+            put: "/clientupdates"
+            body: "*"
+        };
+    }
+    rpc GetClientUpdateCount(GetClientUpdateCountReq) returns (GetClientUpdateCountResp) {
+        option (google.api.http) = {
+            put: "/clientupdatecount"
+            body: "*"
+        };
+    }
+
+    // utility functions
+    rpc GenerateUUID(GenerateUUIDReq) returns (GenerateUUIDResp) {
+        option (google.api.http) = {
+            get: "/util/uuid"
+        };
+    }
+}
+
+message User {
+    string username = 1 [(gogoproto.jsontag) = "username"];
+    string token = 2 [(gogoproto.jsontag) = "token"];
+}
+
+message App {
+    string id = 1 [(gogoproto.jsontag) = "id", (gogoproto.customname) = "ID"];
+    string label = 2 [(gogoproto.jsontag) = "label"];
+    string description = 3 [(gogoproto.jsontag) = "description"];
+}
+
+message Channel {
+    string id = 1 [(gogoproto.jsontag) = "id", (gogoproto.customname) = "ID"];
+    string app_id = 2 [(gogoproto.jsontag) = "appID", (gogoproto.customname) = "AppID"];
+    string label = 3 [(gogoproto.jsontag) = "label"];
+    string version = 4 [(gogoproto.jsontag) = "version"];
+    bool publish = 5 [(gogoproto.jsontag) = "publish"];
+    string upstream_id = 6 [(gogoproto.jsontag) = "upstreamID", (gogoproto.customname) = "UpstreamID"];
+    string created_at = 7 [(gogoproto.jsontag) = "createdAt"];
+}
+
+message Group {
+    string group_id = 1 [(gogoproto.jsontag) = "id", (gogoproto.customname) = "ID"];
+    string app_id = 2 [(gogoproto.jsontag) = "appID", (gogoproto.customname) = "AppID"];
+    string channel_id = 3 [(gogoproto.jsontag) = "channelID", (gogoproto.customname) = "ChannelID"];
+    string label = 4 [(gogoproto.jsontag) = "label"];
+    int64 update_count = 5 [(gogoproto.jsontag) = "updateCount"];
+    int64 update_interval = 6 [(gogoproto.jsontag) = "updateInterval"];
+    bool updates_paused = 7 [(gogoproto.jsontag) = "updatesPaused"];
+    bool update_pooling = 8 [(gogoproto.jsontag) = "updatePooling"];
+    string oem_blacklist = 9 [(gogoproto.jsontag) = "oemBlacklist", (gogoproto.customname) = "OEMBlacklist"];
+}
+
+message Package {
+    string app_id = 1 [(gogoproto.jsontag) = "appID", (gogoproto.customname) = "AppID"];
+    string version = 2 [(gogoproto.jsontag) = "version"];
+    string url = 3 [(gogoproto.jsontag) = "url", (gogoproto.customname) = "URL"];
+    string size = 4 [(gogoproto.jsontag) = "size"];
+    string sha1_sum = 5 [(gogoproto.jsontag) = "sha1Sum"];
+    string sha256_sum = 6 [(gogoproto.jsontag) = "sha256Sum"];
+    bool required = 7 [(gogoproto.jsontag) = "required"];
+    string metadata_signature_rsa = 8 [(gogoproto.jsontag) = "metadataSignatureRsa"];
+    string metadata_size = 9 [(gogoproto.jsontag) = "metadataSize"];
+    string created_at = 10 [(gogoproto.jsontag) = "createdAt"];
+    string release_notes = 11 [(gogoproto.jsontag) = "releaseNotes"];
+}
+
+message Upstream {
+    string id = 1 [(gogoproto.jsontag) = "id", (gogoproto.customname) = "ID"];
+    string url = 2 [(gogoproto.jsontag) = "url", (gogoproto.customname) = "URL"];
+    string label = 3 [(gogoproto.jsontag) = "label"];
+}
+
+message CreateUserReq {
+    string username = 1 [(gogoproto.jsontag) = "username"];
+}
+message CreateUserResp {
+    User user = 1 [(gogoproto.jsontag) = "user"];
+}
+
+message ListUsersReq {}
+message ListUsersResp {
+    repeated User items = 1 [(gogoproto.jsontag) = "users"];
+}
+
+message GetUserReq {
+    string username = 1 [(gogoproto.jsontag) = "username"];
+}
+message GetUserResp {
+    User user = 1 [(gogoproto.jsontag) = "user"];
+}
+
+message DeleteUserReq {
+    string username = 1 [(gogoproto.jsontag) = "username"];
+}
+message DeleteUserResp {}
+
+message GenerateUserTokenReq {
+    string username = 1 [(gogoproto.jsontag) = "username"];
+}
+message GenerateUserTokenResp {
+    User user = 1 [(gogoproto.jsontag) = "user"];
+}
+
+message CreateAppReq {
+    string id = 1 [(gogoproto.jsontag) = "id", (gogoproto.customname) = "ID"];
+    string label = 2 [(gogoproto.jsontag) = "label"];
+    string description = 3 [(gogoproto.jsontag) = "description"];
+}
+message CreateAppResp {
+    App app = 1 [(gogoproto.jsontag) = "app"];
+}
+
+message ListAppsReq {}
+message ListAppsResp {
+    repeated App items = 1 [(gogoproto.jsontag) = "items"];
+}
+
+message GetAppReq {
+    string id = 1 [(gogoproto.jsontag) = "id", (gogoproto.customname) = "ID"];
+}
+message GetAppResp {
+    App app = 1 [(gogoproto.jsontag) = "app"];
+}
+
+message DeleteAppReq {
+    string id = 1 [(gogoproto.jsontag) = "id", (gogoproto.customname) = "ID"];
+}
+message DeleteAppResp {}
+
+message SetAppLabelReq {
+    string id = 1 [(gogoproto.jsontag) = "id", (gogoproto.customname) = "ID"];
+    string label = 2 [(gogoproto.jsontag) = "label"];
+}
+message SetAppLabelResp {
+    App app = 1 [(gogoproto.jsontag) = "app"];
+}
+
+message SetAppDescriptionReq {
+    string id = 1 [(gogoproto.jsontag) = "id", (gogoproto.customname) = "ID"];
+    string description = 2 [(gogoproto.jsontag) = "description"];
+}
+message SetAppDescriptionResp {
+    App app = 1 [(gogoproto.jsontag) = "app"];
+}
+
+message CreateChannelReq {
+    string label = 1 [(gogoproto.jsontag) = "label"];
+    string app_id = 2 [(gogoproto.jsontag) = "appID", (gogoproto.customname) = "AppID"];
+    string version = 3 [(gogoproto.jsontag) = "version"];
+    bool publish = 4 [(gogoproto.jsontag) = "publish"];
+    string upstream_id = 5 [(gogoproto.jsontag) = "upstreamID", (gogoproto.customname) = "UpstreamID"];
+}
+message CreateChannelResp {
+    Channel channel = 1 [(gogoproto.jsontag) = "channel"];
+}
+
+message ListChannelsReq {
+    string app_id = 1 [(gogoproto.jsontag) = "appID", (gogoproto.customname) = "AppID"];
+}
+message ListChannelsResp {
+    repeated Channel items = 1 [(gogoproto.jsontag) = "items"];
+}
+
+message GetChannelReq {
+    string id = 1 [(gogoproto.jsontag) = "channelID", (gogoproto.customname) = "ChannelID"];
+}
+message GetChannelResp {
+    Channel channel = 1 [(gogoproto.jsontag) = "channel"];
+}
+
+message DeleteChannelReq {
+    string id = 1 [(gogoproto.jsontag) = "channelID", (gogoproto.customname) = "ChannelID"];
+}
+message DeleteChannelResp {}
+
+message SetChannelLabelReq {
+    string id = 1 [(gogoproto.jsontag) = "id", (gogoproto.customname) = "ID"];
+    string label = 2 [(gogoproto.jsontag) = "label"];
+}
+message SetChannelLabelResp {
+    Channel channel = 1 [(gogoproto.jsontag) = "channel"];
+}
+
+message SetChannelVersionReq {
+    string id = 1 [(gogoproto.jsontag) = "id", (gogoproto.customname) = "ID"];
+    string version = 2 [(gogoproto.jsontag) = "version"];
+}
+message SetChannelVersionResp {
+    Channel channel = 1 [(gogoproto.jsontag) = "channel"];
+}
+
+message SetChannelPublishReq {
+    string id = 1 [(gogoproto.jsontag) = "id", (gogoproto.customname) = "ID"];
+    bool publish = 2 [(gogoproto.jsontag) = "publish"];
+}
+message SetChannelPublishResp {
+    Channel channel = 1 [(gogoproto.jsontag) = "channel"];
+}
+
+message SetChannelUpstreamReq {
+    string id = 1 [(gogoproto.jsontag) = "id", (gogoproto.customname) = "ID"];
+    string upstream_id = 2 [(gogoproto.jsontag) = "upstreamID"];
+}
+message SetChannelUpstreamResp {
+    Channel channel = 1 [(gogoproto.jsontag) = "channel"];
+}
+
+message DeleteChannelUpstreamReq {
+    string id = 1 [(gogoproto.jsontag) = "id", (gogoproto.customname) = "ID"];
+}
+message DeleteChannelUpstreamResp {
+    Channel channel = 1 [(gogoproto.jsontag) = "channel"];
+}
+
+message CreateGroupReq {
+    string group_id = 1 [(gogoproto.jsontag) = "id", (gogoproto.customname) = "ID"];
+    string app_id = 2 [(gogoproto.jsontag) = "appID", (gogoproto.customname) = "AppID"];
+    string channel_id = 3 [(gogoproto.jsontag) = "channelID", (gogoproto.customname) = "ChannelID"];
+    string label = 4 [(gogoproto.jsontag) = "label"];
+    int64 update_count = 5 [(gogoproto.jsontag) = "updateCount"];
+    int64 update_interval = 6 [(gogoproto.jsontag) = "updateInterval"];
+    bool updates_paused = 7 [(gogoproto.jsontag) = "updatesPaused"];
+    bool update_pooling = 8 [(gogoproto.jsontag) = "updatePooling"];
+    string oem_blacklist = 9 [(gogoproto.jsontag) = "oemBlacklist", (gogoproto.customname) = "OEMBlacklist"];
+}
+message CreateGroupResp {
+    Group group = 1 [(gogoproto.jsontag) = "group"];
+}
+
+message ListGroupsReq {
+    string app_id = 1 [(gogoproto.jsontag) = "appID", (gogoproto.customname) = "AppID"];
+}
+message ListGroupsResp {
+    repeated Group items = 1 [(gogoproto.jsontag) = "items"];
+}
+
+message GetGroupReq {
+    string group_id = 1 [(gogoproto.jsontag) = "id", (gogoproto.customname) = "ID"];
+    string app_id = 2 [(gogoproto.jsontag) = "appID", (gogoproto.customname) = "AppID"];
+}
+message GetGroupResp {
+    Group group = 1 [(gogoproto.jsontag) = "group"];
+}
+
+message DeleteGroupReq {
+    string group_id = 1 [(gogoproto.jsontag) = "id", (gogoproto.customname) = "ID"];
+    string app_id = 2 [(gogoproto.jsontag) = "appID", (gogoproto.customname) = "AppID"];
+}
+message DeleteGroupResp {}
+
+message SetGroupChannelIDReq {
+    string group_id = 1 [(gogoproto.jsontag) = "id", (gogoproto.customname) = "ID"];
+    string app_id = 2 [(gogoproto.jsontag) = "appID", (gogoproto.customname) = "AppID"];
+    string channel_id = 3 [(gogoproto.jsontag) = "channelID", (gogoproto.customname) = "ChannelID"];
+}
+message SetGroupChannelIDResp {
+    Group group = 1 [(gogoproto.jsontag) = "group"];
+}
+
+message SetGroupLabelReq {
+    string group_id = 1 [(gogoproto.jsontag) = "id", (gogoproto.customname) = "ID"];
+    string app_id = 2 [(gogoproto.jsontag) = "appID", (gogoproto.customname) = "AppID"];
+    string label = 3 [(gogoproto.jsontag) = "label"];
+}
+message SetGroupLabelResp {
+    Group group = 1 [(gogoproto.jsontag) = "group"];
+}
+
+message SetGroupUpdateCountReq {
+    string group_id = 1 [(gogoproto.jsontag) = "id", (gogoproto.customname) = "ID"];
+    string app_id = 2 [(gogoproto.jsontag) = "appID", (gogoproto.customname) = "AppID"];
+    int64 update_count = 3 [(gogoproto.jsontag) = "updateCount"];
+}
+message SetGroupUpdateCountResp {
+    Group group = 1 [(gogoproto.jsontag) = "group"];
+}
+
+message SetGroupUpdateIntervalReq {
+    string group_id = 1 [(gogoproto.jsontag) = "id", (gogoproto.customname) = "ID"];
+    string app_id = 2 [(gogoproto.jsontag) = "appID", (gogoproto.customname) = "AppID"];
+    int64 update_interval = 3 [(gogoproto.jsontag) = "updateInterval"];
+}
+message SetGroupUpdateIntervalResp {
+    Group group = 1 [(gogoproto.jsontag) = "group"];
+}
+
+message SetGroupUpdatesPausedStateReq {
+    string group_id = 1 [(gogoproto.jsontag) = "id", (gogoproto.customname) = "ID"];
+    string app_id = 2 [(gogoproto.jsontag) = "appID", (gogoproto.customname) = "AppID"];
+    bool updates_paused = 3 [(gogoproto.jsontag) = "updatesPaused"];
+}
+message SetGroupUpdatesPausedStateResp {
+    Group group = 1 [(gogoproto.jsontag) = "group"];
+}
+
+message SetGroupUpdatePoolingReq {
+    string group_id = 1 [(gogoproto.jsontag) = "id", (gogoproto.customname) = "ID"];
+    string app_id = 2 [(gogoproto.jsontag) = "appID", (gogoproto.customname) = "AppID"];
+    bool update_pooling = 3 [(gogoproto.jsontag) = "updatePooling"];
+}
+message SetGroupUpdatePoolingResp {
+    Group group = 1 [(gogoproto.jsontag) = "group"];
+}
+
+message SetGroupOEMBlacklistReq {
+    string group_id = 1 [(gogoproto.jsontag) = "id", (gogoproto.customname) = "ID"];
+    string app_id = 2 [(gogoproto.jsontag) = "appID", (gogoproto.customname) = "AppID"];
+    string oem_blacklist = 3 [(gogoproto.jsontag) = "oemBlacklist", (gogoproto.customname) = "OEMBlacklist"];
+}
+message SetGroupOEMBlacklistResp {
+    Group group = 1 [(gogoproto.jsontag) = "group"];
+}
+
+message GroupRequestsValues {
+    int64 timestamp = 1 [(gogoproto.jsontag) = "timestamp"];
+    int64 count = 2 [(gogoproto.jsontag) = "count"];
+}
+
+message GetGroupVersionsRollupReq {
+    string app_id = 1 [(gogoproto.jsontag) = "appID", (gogoproto.customname) = "AppID"];
+    string group_id = 2 [(gogoproto.jsontag) = "groupID", (gogoproto.customname) = "GroupID"];
+    int64 date_start = 3 [(gogoproto.jsontag) = "dateStart"];
+    int64 date_end = 4 [(gogoproto.jsontag) = "dateEnd"];
+    int64 resolution = 5 [(gogoproto.jsontag) = "resolution"];
+    string versions = 6 [(gogoproto.jsontag) = "versions"];
+}
+message GroupVersionsItem {
+    string version = 1 [(gogoproto.jsontag) = "version"];
+    repeated GroupRequestsValues values = 4 [(gogoproto.jsontag) = "values"];
+}
+message GetGroupVersionsRollupResp {
+    repeated GroupVersionsItem items = 1 [(gogoproto.jsontag) = "items"];
+}
+
+message GetGroupEventsRollupReq {
+    string app_id = 1 [(gogoproto.jsontag) = "appID", (gogoproto.customname) = "AppID"];
+    string group_id = 2 [(gogoproto.jsontag) = "groupID", (gogoproto.customname) = "GroupID"];
+    int64 date_start = 3 [(gogoproto.jsontag) = "dateStart"];
+    int64 date_end = 4 [(gogoproto.jsontag) = "dateEnd"];
+    int64 resolution = 5 [(gogoproto.jsontag) = "resolution"];
+    string versions = 6 [(gogoproto.jsontag) = "versions"];
+}
+message GroupEventsItem {
+    string version = 1 [(gogoproto.jsontag) = "version"];
+    int64 event_type = 2 [(gogoproto.jsontag) = "eventType"];
+    int64 event_result = 3 [(gogoproto.jsontag) = "eventResult"];
+    repeated GroupRequestsValues values = 4 [(gogoproto.jsontag) = "values"];
+}
+message GetGroupEventsRollupResp {
+    repeated GroupEventsItem items = 1 [(gogoproto.jsontag) = "items"];
+}
+
+message CreatePackageReq {
+    string app_id = 1 [(gogoproto.jsontag) = "appID", (gogoproto.customname) = "AppID"];
+    string version = 2 [(gogoproto.jsontag) = "version"];
+    string url = 3 [(gogoproto.jsontag) = "url", (gogoproto.customname) = "URL"];
+    string size = 4 [(gogoproto.jsontag) = "size"];
+    string sha1_sum = 5 [(gogoproto.jsontag) = "sha1Sum"];
+    string sha256_sum = 6 [(gogoproto.jsontag) = "sha256Sum"];
+    bool required = 7 [(gogoproto.jsontag) = "required"];
+    string metadata_signature_rsa = 8 [(gogoproto.jsontag) = "metadataSignatureRsa"];
+    string metadata_size = 9 [(gogoproto.jsontag) = "metadataSize"];
+    string release_notes = 10 [(gogoproto.jsontag) = "releaseNotes"];
+}
+message CreatePackageResp {
+    Package package = 1 [(gogoproto.jsontag) = "package"];
+}
+
+message ListPackagesReq {
+    string app_id = 1 [(gogoproto.jsontag) = "appID", (gogoproto.customname) = "AppID"];
+    int64 limit = 2 [(gogoproto.jsontag) = "limit"];
+    int64 skip = 3 [(gogoproto.jsontag) = "skip"];
+}
+message ListPackagesResp {
+    repeated Package items = 1 [(gogoproto.jsontag) = "items"];
+    int64 total = 2 [(gogoproto.jsontag) = "total"];
+}
+
+message GetPackageReq {
+    string app_id = 1 [(gogoproto.jsontag) = "appID", (gogoproto.customname) = "AppID"];
+    string version = 2 [(gogoproto.jsontag) = "version"];
+}
+message GetPackageResp {
+    Package package = 1 [(gogoproto.jsontag) = "package"];
+}
+
+message DeletePackageReq {
+    string app_id = 1 [(gogoproto.jsontag) = "appID", (gogoproto.customname) = "AppID"];
+    string version = 2 [(gogoproto.jsontag) = "version"];
+}
+message DeletePackageResp {}
+
+message CreateUpstreamReq {
+    string url = 1 [(gogoproto.jsontag) = "url", (gogoproto.customname) = "URL"];
+    string label = 2 [(gogoproto.jsontag) = "label"];
+}
+message CreateUpstreamResp {
+    Upstream upstream = 1 [(gogoproto.jsontag) = "upstream"];
+}
+
+message ListUpstreamsReq {}
+message ListUpstreamsResp {
+    repeated Upstream items = 1 [(gogoproto.jsontag) = "items"];
+}
+
+message GetUpstreamReq {
+    string id = 1 [(gogoproto.jsontag) = "id", (gogoproto.customname) = "ID"];
+}
+message GetUpstreamResp {
+    Upstream upstream = 1 [(gogoproto.jsontag) = "upstream"];
+}
+
+message DeleteUpstreamReq {
+    string id = 1 [(gogoproto.jsontag) = "id", (gogoproto.customname) = "ID"];
+}
+message DeleteUpstreamResp {}
+
+message SyncUpstreamsReq {}
+message SyncUpstreamsResp {
+    string status = 1 [(gogoproto.jsontag) = "status"];
+    string detail = 2 [(gogoproto.jsontag) = "detail"];
+}
+
+message SetUpstreamURLReq {
+    string id = 1 [(gogoproto.jsontag) = "id", (gogoproto.customname) = "ID"];
+    string url = 2 [(gogoproto.jsontag) = "url", (gogoproto.customname) = "URL"];
+}
+message SetUpstreamURLResp {
+    Upstream upstream = 1 [(gogoproto.jsontag) = "upstream"];
+}
+
+message SetUpstreamLabelReq {
+    string id = 1 [(gogoproto.jsontag) = "id", (gogoproto.customname) = "ID"];
+    string label = 2 [(gogoproto.jsontag) = "label"];
+}
+message SetUpstreamLabelResp {
+    Upstream upstream = 1 [(gogoproto.jsontag) = "upstream"];
+}
+
+message GetClientHistoryReq {
+    string client_id = 1 [(gogoproto.jsontag) = "clientID", (gogoproto.customname) = "ClientID"];
+}
+message GetClientHistoryItem {
+    int64 date_time = 1 [(gogoproto.jsontag) = "dateTime"];
+    int64 event_type = 2 [(gogoproto.jsontag) = "eventType"];
+    int64 event_result = 3 [(gogoproto.jsontag) = "eventResult"];
+    int64 error_code = 4 [(gogoproto.jsontag) = "errorCode"];
+    string version = 5 [(gogoproto.jsontag) = "version"];
+    string group_id = 6 [(gogoproto.jsontag) = "groupID", (gogoproto.customname) = "GroupID"];
+    string install_source = 7 [(gogoproto.jsontag) = "installSource"];
+}
+message GetClientHistoryResp {
+    repeated GetClientHistoryItem items = 1 [(gogoproto.jsontag) = "items"];
+}
+
+message ListAppVersionsReq {
+    int64 date_start = 1 [(gogoproto.jsontag) = "dateStart"];
+    int64 date_end = 2 [(gogoproto.jsontag) = "dateEnd"];
+    string app_id = 3 [(gogoproto.jsontag) = "appID", (gogoproto.customname) = "AppID"];
+    string group_id = 4 [(gogoproto.jsontag) = "groupID", (gogoproto.customname) = "GroupID"];
+    string version = 5 [(gogoproto.jsontag) = "version"];
+    string oem = 6 [(gogoproto.jsontag) = "oem", (gogoproto.customname) = "OEM"];
+    int64 event_type = 7 [(gogoproto.jsontag) = "eventType"];
+    int64 event_result = 8 [(gogoproto.jsontag) = "eventResult"];
+}
+message AppVersionItem {
+    string app_id = 1 [(gogoproto.jsontag) = "appID", (gogoproto.customname) = "AppID"];
+    string group_id = 2 [(gogoproto.jsontag) = "groupID", (gogoproto.customname) = "GroupID"];
+    string version = 3 [(gogoproto.jsontag) = "version"];
+    string count = 4 [(gogoproto.jsontag) = "count"];
+}
+message ListAppVersionsResp {
+    repeated AppVersionItem items = 1 [(gogoproto.jsontag) = "items"];
+}
+
+message ListClientUpdatesReq {
+    int64 date_start = 1 [(gogoproto.jsontag) = "dateStart"];
+    int64 date_end = 2 [(gogoproto.jsontag) = "dateEnd"];
+    string app_id = 3 [(gogoproto.jsontag) = "appID", (gogoproto.customname) = "AppID"];
+    string group_id = 4 [(gogoproto.jsontag) = "groupID", (gogoproto.customname) = "GroupID"];
+    string version = 5 [(gogoproto.jsontag) = "version"];
+    string oem = 6 [(gogoproto.jsontag) = "oem", (gogoproto.customname) = "OEM"];
+    int64 event_type = 7 [(gogoproto.jsontag) = "eventType"];
+    int64 event_result = 8 [(gogoproto.jsontag) = "eventResult"];
+    string client_id = 9 [(gogoproto.jsontag) = "clientID", (gogoproto.customname) = "ClientID"];
+    int64 limit = 10 [(gogoproto.jsontag) = "limit"];
+    int64 skip = 11 [(gogoproto.jsontag) = "skip"];
+}
+message ClientUpdate {
+    string app_id = 1 [(gogoproto.jsontag) = "appID", (gogoproto.customname) = "AppID"];
+    string client_id = 2 [(gogoproto.jsontag) = "clientID", (gogoproto.customname) = "ClientID"];
+    string group_id = 3 [(gogoproto.jsontag) = "groupID", (gogoproto.customname) = "GroupID"];
+    string version = 4 [(gogoproto.jsontag) = "version"];
+    string last_seen = 5 [(gogoproto.jsontag) = "lastSeen"];
+    int64 event_type = 6 [(gogoproto.jsontag) = "eventType"];
+    int64 event_result = 7 [(gogoproto.jsontag) = "eventResult"];
+    int64 error_code = 8 [(gogoproto.jsontag) = "errorCode"];
+    string oem = 9 [(gogoproto.jsontag) = "oem", (gogoproto.customname) = "OEM"];
+}
+message ListClientUpdatesResp {
+    repeated ClientUpdate items = 1 [(gogoproto.jsontag) = "items"];
+}
+
+message GetClientUpdateCountReq {
+    int64 date_start = 1 [(gogoproto.jsontag) = "dateStart"];
+    int64 date_end = 2 [(gogoproto.jsontag) = "dateEnd"];
+    string app_id = 3 [(gogoproto.jsontag) = "appID", (gogoproto.customname) = "AppID"];
+    string group_id = 4 [(gogoproto.jsontag) = "groupID", (gogoproto.customname) = "GroupID"];
+    string version = 5 [(gogoproto.jsontag) = "version"];
+    string oem = 6 [(gogoproto.jsontag) = "oem", (gogoproto.customname) = "OEM"];
+    int64 event_type = 7 [(gogoproto.jsontag) = "eventType"];
+    int64 event_result = 8 [(gogoproto.jsontag) = "eventResult"];
+}
+message GetClientUpdateCountResp {
+    int64 count = 1 [(gogoproto.jsontag) = "count"];
+}
+
+message GenerateUUIDReq {}
+message GenerateUUIDResp {
+    string uuid = 1 [(gogoproto.jsontag) = "uuid", (gogoproto.customname) = "UUID"];
+}
