@@ -9,7 +9,7 @@ package update
 
 import (
 	"bytes"
-	"github.com/coreos/updateservicectl/Godeps/_workspace/src/code.google.com/p/google-api-go-client/googleapi"
+	"code.google.com/p/google-api-go-client/googleapi"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -457,6 +457,14 @@ func (r *AdminService) CreateUser(adminuserreq *AdminUserReq) *AdminCreateUserCa
 	return c
 }
 
+// Fields allows partial responses to be retrieved.
+// See https://developers.google.com/gdata/docs/2.0/basics#PartialResponse
+// for more information.
+func (c *AdminCreateUserCall) Fields(s ...googleapi.Field) *AdminCreateUserCall {
+	c.opt_["fields"] = googleapi.CombineFields(s)
+	return c
+}
+
 func (c *AdminCreateUserCall) Do() (*AdminUser, error) {
 	var body io.Reader = nil
 	body, err := googleapi.WithoutDataWrapper.JSONReader(c.adminuserreq)
@@ -466,6 +474,9 @@ func (c *AdminCreateUserCall) Do() (*AdminUser, error) {
 	ctype := "application/json"
 	params := make(url.Values)
 	params.Set("alt", "json")
+	if v, ok := c.opt_["fields"]; ok {
+		params.Set("fields", fmt.Sprintf("%v", v))
+	}
 	urls := googleapi.ResolveRelative(c.s.BasePath, "admin/user")
 	urls += "?" + params.Encode()
 	req, _ := http.NewRequest("POST", urls, body)
@@ -480,8 +491,8 @@ func (c *AdminCreateUserCall) Do() (*AdminUser, error) {
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, err
 	}
-	ret := new(AdminUser)
-	if err := json.NewDecoder(res.Body).Decode(ret); err != nil {
+	var ret *AdminUser
+	if err := json.NewDecoder(res.Body).Decode(&ret); err != nil {
 		return nil, err
 	}
 	return ret, nil
@@ -516,15 +527,27 @@ func (r *AdminService) DeleteUser(userName string) *AdminDeleteUserCall {
 	return c
 }
 
+// Fields allows partial responses to be retrieved.
+// See https://developers.google.com/gdata/docs/2.0/basics#PartialResponse
+// for more information.
+func (c *AdminDeleteUserCall) Fields(s ...googleapi.Field) *AdminDeleteUserCall {
+	c.opt_["fields"] = googleapi.CombineFields(s)
+	return c
+}
+
 func (c *AdminDeleteUserCall) Do() (*AdminUser, error) {
 	var body io.Reader = nil
 	params := make(url.Values)
 	params.Set("alt", "json")
+	if v, ok := c.opt_["fields"]; ok {
+		params.Set("fields", fmt.Sprintf("%v", v))
+	}
 	urls := googleapi.ResolveRelative(c.s.BasePath, "admin/user/{userName}")
 	urls += "?" + params.Encode()
 	req, _ := http.NewRequest("DELETE", urls, body)
-	req.URL.Path = strings.Replace(req.URL.Path, "{userName}", url.QueryEscape(c.userName), 1)
-	googleapi.SetOpaque(req.URL)
+	googleapi.Expand(req.URL, map[string]string{
+		"userName": c.userName,
+	})
 	req.Header.Set("User-Agent", "google-api-go-client/0.5")
 	res, err := c.s.client.Do(req)
 	if err != nil {
@@ -534,8 +557,8 @@ func (c *AdminDeleteUserCall) Do() (*AdminUser, error) {
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, err
 	}
-	ret := new(AdminUser)
-	if err := json.NewDecoder(res.Body).Decode(ret); err != nil {
+	var ret *AdminUser
+	if err := json.NewDecoder(res.Body).Decode(&ret); err != nil {
 		return nil, err
 	}
 	return ret, nil
@@ -578,6 +601,14 @@ func (r *AdminService) GenToken(userName string, adminuserreq *AdminUserReq) *Ad
 	return c
 }
 
+// Fields allows partial responses to be retrieved.
+// See https://developers.google.com/gdata/docs/2.0/basics#PartialResponse
+// for more information.
+func (c *AdminGenTokenCall) Fields(s ...googleapi.Field) *AdminGenTokenCall {
+	c.opt_["fields"] = googleapi.CombineFields(s)
+	return c
+}
+
 func (c *AdminGenTokenCall) Do() (*AdminUser, error) {
 	var body io.Reader = nil
 	body, err := googleapi.WithoutDataWrapper.JSONReader(c.adminuserreq)
@@ -587,11 +618,15 @@ func (c *AdminGenTokenCall) Do() (*AdminUser, error) {
 	ctype := "application/json"
 	params := make(url.Values)
 	params.Set("alt", "json")
+	if v, ok := c.opt_["fields"]; ok {
+		params.Set("fields", fmt.Sprintf("%v", v))
+	}
 	urls := googleapi.ResolveRelative(c.s.BasePath, "admin/user/{userName}/token/new")
 	urls += "?" + params.Encode()
 	req, _ := http.NewRequest("PUT", urls, body)
-	req.URL.Path = strings.Replace(req.URL.Path, "{userName}", url.QueryEscape(c.userName), 1)
-	googleapi.SetOpaque(req.URL)
+	googleapi.Expand(req.URL, map[string]string{
+		"userName": c.userName,
+	})
 	req.Header.Set("Content-Type", ctype)
 	req.Header.Set("User-Agent", "google-api-go-client/0.5")
 	res, err := c.s.client.Do(req)
@@ -602,8 +637,8 @@ func (c *AdminGenTokenCall) Do() (*AdminUser, error) {
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, err
 	}
-	ret := new(AdminUser)
-	if err := json.NewDecoder(res.Body).Decode(ret); err != nil {
+	var ret *AdminUser
+	if err := json.NewDecoder(res.Body).Decode(&ret); err != nil {
 		return nil, err
 	}
 	return ret, nil
@@ -648,15 +683,27 @@ func (r *AdminService) GetUser(userName string) *AdminGetUserCall {
 	return c
 }
 
+// Fields allows partial responses to be retrieved.
+// See https://developers.google.com/gdata/docs/2.0/basics#PartialResponse
+// for more information.
+func (c *AdminGetUserCall) Fields(s ...googleapi.Field) *AdminGetUserCall {
+	c.opt_["fields"] = googleapi.CombineFields(s)
+	return c
+}
+
 func (c *AdminGetUserCall) Do() (*AdminUser, error) {
 	var body io.Reader = nil
 	params := make(url.Values)
 	params.Set("alt", "json")
+	if v, ok := c.opt_["fields"]; ok {
+		params.Set("fields", fmt.Sprintf("%v", v))
+	}
 	urls := googleapi.ResolveRelative(c.s.BasePath, "admin/user/{userName}")
 	urls += "?" + params.Encode()
 	req, _ := http.NewRequest("GET", urls, body)
-	req.URL.Path = strings.Replace(req.URL.Path, "{userName}", url.QueryEscape(c.userName), 1)
-	googleapi.SetOpaque(req.URL)
+	googleapi.Expand(req.URL, map[string]string{
+		"userName": c.userName,
+	})
 	req.Header.Set("User-Agent", "google-api-go-client/0.5")
 	res, err := c.s.client.Do(req)
 	if err != nil {
@@ -666,8 +713,8 @@ func (c *AdminGetUserCall) Do() (*AdminUser, error) {
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, err
 	}
-	ret := new(AdminUser)
-	if err := json.NewDecoder(res.Body).Decode(ret); err != nil {
+	var ret *AdminUser
+	if err := json.NewDecoder(res.Body).Decode(&ret); err != nil {
 		return nil, err
 	}
 	return ret, nil
@@ -706,10 +753,21 @@ func (r *AdminService) ListUsers() *AdminListUsersCall {
 	return c
 }
 
+// Fields allows partial responses to be retrieved.
+// See https://developers.google.com/gdata/docs/2.0/basics#PartialResponse
+// for more information.
+func (c *AdminListUsersCall) Fields(s ...googleapi.Field) *AdminListUsersCall {
+	c.opt_["fields"] = googleapi.CombineFields(s)
+	return c
+}
+
 func (c *AdminListUsersCall) Do() (*AdminListUsersResp, error) {
 	var body io.Reader = nil
 	params := make(url.Values)
 	params.Set("alt", "json")
+	if v, ok := c.opt_["fields"]; ok {
+		params.Set("fields", fmt.Sprintf("%v", v))
+	}
 	urls := googleapi.ResolveRelative(c.s.BasePath, "admin/user")
 	urls += "?" + params.Encode()
 	req, _ := http.NewRequest("GET", urls, body)
@@ -723,8 +781,8 @@ func (c *AdminListUsersCall) Do() (*AdminListUsersResp, error) {
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, err
 	}
-	ret := new(AdminListUsersResp)
-	if err := json.NewDecoder(res.Body).Decode(ret); err != nil {
+	var ret *AdminListUsersResp
+	if err := json.NewDecoder(res.Body).Decode(&ret); err != nil {
 		return nil, err
 	}
 	return ret, nil
@@ -755,15 +813,27 @@ func (r *AppService) Delete(id string) *AppDeleteCall {
 	return c
 }
 
+// Fields allows partial responses to be retrieved.
+// See https://developers.google.com/gdata/docs/2.0/basics#PartialResponse
+// for more information.
+func (c *AppDeleteCall) Fields(s ...googleapi.Field) *AppDeleteCall {
+	c.opt_["fields"] = googleapi.CombineFields(s)
+	return c
+}
+
 func (c *AppDeleteCall) Do() (*App, error) {
 	var body io.Reader = nil
 	params := make(url.Values)
 	params.Set("alt", "json")
+	if v, ok := c.opt_["fields"]; ok {
+		params.Set("fields", fmt.Sprintf("%v", v))
+	}
 	urls := googleapi.ResolveRelative(c.s.BasePath, "apps/{id}")
 	urls += "?" + params.Encode()
 	req, _ := http.NewRequest("DELETE", urls, body)
-	req.URL.Path = strings.Replace(req.URL.Path, "{id}", url.QueryEscape(c.id), 1)
-	googleapi.SetOpaque(req.URL)
+	googleapi.Expand(req.URL, map[string]string{
+		"id": c.id,
+	})
 	req.Header.Set("User-Agent", "google-api-go-client/0.5")
 	res, err := c.s.client.Do(req)
 	if err != nil {
@@ -773,8 +843,8 @@ func (c *AppDeleteCall) Do() (*App, error) {
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, err
 	}
-	ret := new(App)
-	if err := json.NewDecoder(res.Body).Decode(ret); err != nil {
+	var ret *App
+	if err := json.NewDecoder(res.Body).Decode(&ret); err != nil {
 		return nil, err
 	}
 	return ret, nil
@@ -815,15 +885,27 @@ func (r *AppService) Get(id string) *AppGetCall {
 	return c
 }
 
+// Fields allows partial responses to be retrieved.
+// See https://developers.google.com/gdata/docs/2.0/basics#PartialResponse
+// for more information.
+func (c *AppGetCall) Fields(s ...googleapi.Field) *AppGetCall {
+	c.opt_["fields"] = googleapi.CombineFields(s)
+	return c
+}
+
 func (c *AppGetCall) Do() (*App, error) {
 	var body io.Reader = nil
 	params := make(url.Values)
 	params.Set("alt", "json")
+	if v, ok := c.opt_["fields"]; ok {
+		params.Set("fields", fmt.Sprintf("%v", v))
+	}
 	urls := googleapi.ResolveRelative(c.s.BasePath, "apps/{id}")
 	urls += "?" + params.Encode()
 	req, _ := http.NewRequest("GET", urls, body)
-	req.URL.Path = strings.Replace(req.URL.Path, "{id}", url.QueryEscape(c.id), 1)
-	googleapi.SetOpaque(req.URL)
+	googleapi.Expand(req.URL, map[string]string{
+		"id": c.id,
+	})
 	req.Header.Set("User-Agent", "google-api-go-client/0.5")
 	res, err := c.s.client.Do(req)
 	if err != nil {
@@ -833,8 +915,8 @@ func (c *AppGetCall) Do() (*App, error) {
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, err
 	}
-	ret := new(App)
-	if err := json.NewDecoder(res.Body).Decode(ret); err != nil {
+	var ret *App
+	if err := json.NewDecoder(res.Body).Decode(&ret); err != nil {
 		return nil, err
 	}
 	return ret, nil
@@ -875,6 +957,14 @@ func (r *AppService) Insert(appinsertreq *AppInsertReq) *AppInsertCall {
 	return c
 }
 
+// Fields allows partial responses to be retrieved.
+// See https://developers.google.com/gdata/docs/2.0/basics#PartialResponse
+// for more information.
+func (c *AppInsertCall) Fields(s ...googleapi.Field) *AppInsertCall {
+	c.opt_["fields"] = googleapi.CombineFields(s)
+	return c
+}
+
 func (c *AppInsertCall) Do() (*App, error) {
 	var body io.Reader = nil
 	body, err := googleapi.WithoutDataWrapper.JSONReader(c.appinsertreq)
@@ -884,6 +974,9 @@ func (c *AppInsertCall) Do() (*App, error) {
 	ctype := "application/json"
 	params := make(url.Values)
 	params.Set("alt", "json")
+	if v, ok := c.opt_["fields"]; ok {
+		params.Set("fields", fmt.Sprintf("%v", v))
+	}
 	urls := googleapi.ResolveRelative(c.s.BasePath, "apps")
 	urls += "?" + params.Encode()
 	req, _ := http.NewRequest("POST", urls, body)
@@ -898,8 +991,8 @@ func (c *AppInsertCall) Do() (*App, error) {
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, err
 	}
-	ret := new(App)
-	if err := json.NewDecoder(res.Body).Decode(ret); err != nil {
+	var ret *App
+	if err := json.NewDecoder(res.Body).Decode(&ret); err != nil {
 		return nil, err
 	}
 	return ret, nil
@@ -932,10 +1025,21 @@ func (r *AppService) List() *AppListCall {
 	return c
 }
 
+// Fields allows partial responses to be retrieved.
+// See https://developers.google.com/gdata/docs/2.0/basics#PartialResponse
+// for more information.
+func (c *AppListCall) Fields(s ...googleapi.Field) *AppListCall {
+	c.opt_["fields"] = googleapi.CombineFields(s)
+	return c
+}
+
 func (c *AppListCall) Do() (*AppListResp, error) {
 	var body io.Reader = nil
 	params := make(url.Values)
 	params.Set("alt", "json")
+	if v, ok := c.opt_["fields"]; ok {
+		params.Set("fields", fmt.Sprintf("%v", v))
+	}
 	urls := googleapi.ResolveRelative(c.s.BasePath, "apps")
 	urls += "?" + params.Encode()
 	req, _ := http.NewRequest("GET", urls, body)
@@ -949,8 +1053,8 @@ func (c *AppListCall) Do() (*AppListResp, error) {
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, err
 	}
-	ret := new(AppListResp)
-	if err := json.NewDecoder(res.Body).Decode(ret); err != nil {
+	var ret *AppListResp
+	if err := json.NewDecoder(res.Body).Decode(&ret); err != nil {
 		return nil, err
 	}
 	return ret, nil
@@ -983,6 +1087,14 @@ func (r *AppService) Patch(id string, appupdatereq *AppUpdateReq) *AppPatchCall 
 	return c
 }
 
+// Fields allows partial responses to be retrieved.
+// See https://developers.google.com/gdata/docs/2.0/basics#PartialResponse
+// for more information.
+func (c *AppPatchCall) Fields(s ...googleapi.Field) *AppPatchCall {
+	c.opt_["fields"] = googleapi.CombineFields(s)
+	return c
+}
+
 func (c *AppPatchCall) Do() (*App, error) {
 	var body io.Reader = nil
 	body, err := googleapi.WithoutDataWrapper.JSONReader(c.appupdatereq)
@@ -992,11 +1104,15 @@ func (c *AppPatchCall) Do() (*App, error) {
 	ctype := "application/json"
 	params := make(url.Values)
 	params.Set("alt", "json")
+	if v, ok := c.opt_["fields"]; ok {
+		params.Set("fields", fmt.Sprintf("%v", v))
+	}
 	urls := googleapi.ResolveRelative(c.s.BasePath, "apps/{id}")
 	urls += "?" + params.Encode()
 	req, _ := http.NewRequest("PATCH", urls, body)
-	req.URL.Path = strings.Replace(req.URL.Path, "{id}", url.QueryEscape(c.id), 1)
-	googleapi.SetOpaque(req.URL)
+	googleapi.Expand(req.URL, map[string]string{
+		"id": c.id,
+	})
 	req.Header.Set("Content-Type", ctype)
 	req.Header.Set("User-Agent", "google-api-go-client/0.5")
 	res, err := c.s.client.Do(req)
@@ -1007,8 +1123,8 @@ func (c *AppPatchCall) Do() (*App, error) {
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, err
 	}
-	ret := new(App)
-	if err := json.NewDecoder(res.Body).Decode(ret); err != nil {
+	var ret *App
+	if err := json.NewDecoder(res.Body).Decode(&ret); err != nil {
 		return nil, err
 	}
 	return ret, nil
@@ -1054,6 +1170,14 @@ func (r *AppService) Update(id string, appupdatereq *AppUpdateReq) *AppUpdateCal
 	return c
 }
 
+// Fields allows partial responses to be retrieved.
+// See https://developers.google.com/gdata/docs/2.0/basics#PartialResponse
+// for more information.
+func (c *AppUpdateCall) Fields(s ...googleapi.Field) *AppUpdateCall {
+	c.opt_["fields"] = googleapi.CombineFields(s)
+	return c
+}
+
 func (c *AppUpdateCall) Do() (*App, error) {
 	var body io.Reader = nil
 	body, err := googleapi.WithoutDataWrapper.JSONReader(c.appupdatereq)
@@ -1063,11 +1187,15 @@ func (c *AppUpdateCall) Do() (*App, error) {
 	ctype := "application/json"
 	params := make(url.Values)
 	params.Set("alt", "json")
+	if v, ok := c.opt_["fields"]; ok {
+		params.Set("fields", fmt.Sprintf("%v", v))
+	}
 	urls := googleapi.ResolveRelative(c.s.BasePath, "apps/{id}")
 	urls += "?" + params.Encode()
 	req, _ := http.NewRequest("PATCH", urls, body)
-	req.URL.Path = strings.Replace(req.URL.Path, "{id}", url.QueryEscape(c.id), 1)
-	googleapi.SetOpaque(req.URL)
+	googleapi.Expand(req.URL, map[string]string{
+		"id": c.id,
+	})
 	req.Header.Set("Content-Type", ctype)
 	req.Header.Set("User-Agent", "google-api-go-client/0.5")
 	res, err := c.s.client.Do(req)
@@ -1078,8 +1206,8 @@ func (c *AppUpdateCall) Do() (*App, error) {
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, err
 	}
-	ret := new(App)
-	if err := json.NewDecoder(res.Body).Decode(ret); err != nil {
+	var ret *App
+	if err := json.NewDecoder(res.Body).Decode(&ret); err != nil {
 		return nil, err
 	}
 	return ret, nil
@@ -1175,6 +1303,14 @@ func (c *AppPackageDeleteCall) Url(url string) *AppPackageDeleteCall {
 	return c
 }
 
+// Fields allows partial responses to be retrieved.
+// See https://developers.google.com/gdata/docs/2.0/basics#PartialResponse
+// for more information.
+func (c *AppPackageDeleteCall) Fields(s ...googleapi.Field) *AppPackageDeleteCall {
+	c.opt_["fields"] = googleapi.CombineFields(s)
+	return c
+}
+
 func (c *AppPackageDeleteCall) Do() (*Package, error) {
 	var body io.Reader = nil
 	params := make(url.Values)
@@ -1203,12 +1339,16 @@ func (c *AppPackageDeleteCall) Do() (*Package, error) {
 	if v, ok := c.opt_["url"]; ok {
 		params.Set("url", fmt.Sprintf("%v", v))
 	}
+	if v, ok := c.opt_["fields"]; ok {
+		params.Set("fields", fmt.Sprintf("%v", v))
+	}
 	urls := googleapi.ResolveRelative(c.s.BasePath, "apps/{appId}/packages/{version}")
 	urls += "?" + params.Encode()
 	req, _ := http.NewRequest("DELETE", urls, body)
-	req.URL.Path = strings.Replace(req.URL.Path, "{appId}", url.QueryEscape(c.appId), 1)
-	req.URL.Path = strings.Replace(req.URL.Path, "{version}", url.QueryEscape(c.version), 1)
-	googleapi.SetOpaque(req.URL)
+	googleapi.Expand(req.URL, map[string]string{
+		"appId":   c.appId,
+		"version": c.version,
+	})
 	req.Header.Set("User-Agent", "google-api-go-client/0.5")
 	res, err := c.s.client.Do(req)
 	if err != nil {
@@ -1218,8 +1358,8 @@ func (c *AppPackageDeleteCall) Do() (*Package, error) {
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, err
 	}
-	ret := new(Package)
-	if err := json.NewDecoder(res.Body).Decode(ret); err != nil {
+	var ret *Package
+	if err := json.NewDecoder(res.Body).Decode(&ret); err != nil {
 		return nil, err
 	}
 	return ret, nil
@@ -1302,6 +1442,14 @@ func (r *AppPackageService) Insert(appId string, version string, package_ *Packa
 	return c
 }
 
+// Fields allows partial responses to be retrieved.
+// See https://developers.google.com/gdata/docs/2.0/basics#PartialResponse
+// for more information.
+func (c *AppPackageInsertCall) Fields(s ...googleapi.Field) *AppPackageInsertCall {
+	c.opt_["fields"] = googleapi.CombineFields(s)
+	return c
+}
+
 func (c *AppPackageInsertCall) Do() (*Package, error) {
 	var body io.Reader = nil
 	body, err := googleapi.WithoutDataWrapper.JSONReader(c.package_)
@@ -1311,12 +1459,16 @@ func (c *AppPackageInsertCall) Do() (*Package, error) {
 	ctype := "application/json"
 	params := make(url.Values)
 	params.Set("alt", "json")
+	if v, ok := c.opt_["fields"]; ok {
+		params.Set("fields", fmt.Sprintf("%v", v))
+	}
 	urls := googleapi.ResolveRelative(c.s.BasePath, "apps/{appId}/packages/{version}")
 	urls += "?" + params.Encode()
 	req, _ := http.NewRequest("POST", urls, body)
-	req.URL.Path = strings.Replace(req.URL.Path, "{appId}", url.QueryEscape(c.appId), 1)
-	req.URL.Path = strings.Replace(req.URL.Path, "{version}", url.QueryEscape(c.version), 1)
-	googleapi.SetOpaque(req.URL)
+	googleapi.Expand(req.URL, map[string]string{
+		"appId":   c.appId,
+		"version": c.version,
+	})
 	req.Header.Set("Content-Type", ctype)
 	req.Header.Set("User-Agent", "google-api-go-client/0.5")
 	res, err := c.s.client.Do(req)
@@ -1327,8 +1479,8 @@ func (c *AppPackageInsertCall) Do() (*Package, error) {
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, err
 	}
-	ret := new(Package)
-	if err := json.NewDecoder(res.Body).Decode(ret); err != nil {
+	var ret *Package
+	if err := json.NewDecoder(res.Body).Decode(&ret); err != nil {
 		return nil, err
 	}
 	return ret, nil
@@ -1397,6 +1549,14 @@ func (c *AppPackageListCall) Version(version string) *AppPackageListCall {
 	return c
 }
 
+// Fields allows partial responses to be retrieved.
+// See https://developers.google.com/gdata/docs/2.0/basics#PartialResponse
+// for more information.
+func (c *AppPackageListCall) Fields(s ...googleapi.Field) *AppPackageListCall {
+	c.opt_["fields"] = googleapi.CombineFields(s)
+	return c
+}
+
 func (c *AppPackageListCall) Do() (*PackageList, error) {
 	var body io.Reader = nil
 	params := make(url.Values)
@@ -1410,11 +1570,15 @@ func (c *AppPackageListCall) Do() (*PackageList, error) {
 	if v, ok := c.opt_["version"]; ok {
 		params.Set("version", fmt.Sprintf("%v", v))
 	}
+	if v, ok := c.opt_["fields"]; ok {
+		params.Set("fields", fmt.Sprintf("%v", v))
+	}
 	urls := googleapi.ResolveRelative(c.s.BasePath, "apps/{appId}/packages")
 	urls += "?" + params.Encode()
 	req, _ := http.NewRequest("GET", urls, body)
-	req.URL.Path = strings.Replace(req.URL.Path, "{appId}", url.QueryEscape(c.appId), 1)
-	googleapi.SetOpaque(req.URL)
+	googleapi.Expand(req.URL, map[string]string{
+		"appId": c.appId,
+	})
 	req.Header.Set("User-Agent", "google-api-go-client/0.5")
 	res, err := c.s.client.Do(req)
 	if err != nil {
@@ -1424,8 +1588,8 @@ func (c *AppPackageListCall) Do() (*PackageList, error) {
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, err
 	}
-	ret := new(PackageList)
-	if err := json.NewDecoder(res.Body).Decode(ret); err != nil {
+	var ret *PackageList
+	if err := json.NewDecoder(res.Body).Decode(&ret); err != nil {
 		return nil, err
 	}
 	return ret, nil
@@ -1478,10 +1642,21 @@ func (r *AppPackageService) PublicList() *AppPackagePublicListCall {
 	return c
 }
 
+// Fields allows partial responses to be retrieved.
+// See https://developers.google.com/gdata/docs/2.0/basics#PartialResponse
+// for more information.
+func (c *AppPackagePublicListCall) Fields(s ...googleapi.Field) *AppPackagePublicListCall {
+	c.opt_["fields"] = googleapi.CombineFields(s)
+	return c
+}
+
 func (c *AppPackagePublicListCall) Do() (*PublicPackageList, error) {
 	var body io.Reader = nil
 	params := make(url.Values)
 	params.Set("alt", "json")
+	if v, ok := c.opt_["fields"]; ok {
+		params.Set("fields", fmt.Sprintf("%v", v))
+	}
 	urls := googleapi.ResolveRelative(c.s.BasePath, "public/packages")
 	urls += "?" + params.Encode()
 	req, _ := http.NewRequest("GET", urls, body)
@@ -1495,8 +1670,8 @@ func (c *AppPackagePublicListCall) Do() (*PublicPackageList, error) {
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, err
 	}
-	ret := new(PublicPackageList)
-	if err := json.NewDecoder(res.Body).Decode(ret); err != nil {
+	var ret *PublicPackageList
+	if err := json.NewDecoder(res.Body).Decode(&ret); err != nil {
 		return nil, err
 	}
 	return ret, nil
@@ -1573,6 +1748,14 @@ func (c *AppversionListCall) Version(version string) *AppversionListCall {
 	return c
 }
 
+// Fields allows partial responses to be retrieved.
+// See https://developers.google.com/gdata/docs/2.0/basics#PartialResponse
+// for more information.
+func (c *AppversionListCall) Fields(s ...googleapi.Field) *AppversionListCall {
+	c.opt_["fields"] = googleapi.CombineFields(s)
+	return c
+}
+
 func (c *AppversionListCall) Do() (*AppVersionList, error) {
 	var body io.Reader = nil
 	params := make(url.Values)
@@ -1601,6 +1784,9 @@ func (c *AppversionListCall) Do() (*AppVersionList, error) {
 	if v, ok := c.opt_["version"]; ok {
 		params.Set("version", fmt.Sprintf("%v", v))
 	}
+	if v, ok := c.opt_["fields"]; ok {
+		params.Set("fields", fmt.Sprintf("%v", v))
+	}
 	urls := googleapi.ResolveRelative(c.s.BasePath, "appversions")
 	urls += "?" + params.Encode()
 	req, _ := http.NewRequest("GET", urls, body)
@@ -1614,8 +1800,8 @@ func (c *AppversionListCall) Do() (*AppVersionList, error) {
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, err
 	}
-	ret := new(AppVersionList)
-	if err := json.NewDecoder(res.Body).Decode(ret); err != nil {
+	var ret *AppVersionList
+	if err := json.NewDecoder(res.Body).Decode(&ret); err != nil {
 		return nil, err
 	}
 	return ret, nil
@@ -1696,6 +1882,14 @@ func (c *ChannelDeleteCall) Version(version string) *ChannelDeleteCall {
 	return c
 }
 
+// Fields allows partial responses to be retrieved.
+// See https://developers.google.com/gdata/docs/2.0/basics#PartialResponse
+// for more information.
+func (c *ChannelDeleteCall) Fields(s ...googleapi.Field) *ChannelDeleteCall {
+	c.opt_["fields"] = googleapi.CombineFields(s)
+	return c
+}
+
 func (c *ChannelDeleteCall) Do() (*ChannelRequest, error) {
 	var body io.Reader = nil
 	params := make(url.Values)
@@ -1706,12 +1900,16 @@ func (c *ChannelDeleteCall) Do() (*ChannelRequest, error) {
 	if v, ok := c.opt_["version"]; ok {
 		params.Set("version", fmt.Sprintf("%v", v))
 	}
+	if v, ok := c.opt_["fields"]; ok {
+		params.Set("fields", fmt.Sprintf("%v", v))
+	}
 	urls := googleapi.ResolveRelative(c.s.BasePath, "apps/{appId}/channels/{label}")
 	urls += "?" + params.Encode()
 	req, _ := http.NewRequest("DELETE", urls, body)
-	req.URL.Path = strings.Replace(req.URL.Path, "{appId}", url.QueryEscape(c.appId), 1)
-	req.URL.Path = strings.Replace(req.URL.Path, "{label}", url.QueryEscape(c.label), 1)
-	googleapi.SetOpaque(req.URL)
+	googleapi.Expand(req.URL, map[string]string{
+		"appId": c.appId,
+		"label": c.label,
+	})
 	req.Header.Set("User-Agent", "google-api-go-client/0.5")
 	res, err := c.s.client.Do(req)
 	if err != nil {
@@ -1721,8 +1919,8 @@ func (c *ChannelDeleteCall) Do() (*ChannelRequest, error) {
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, err
 	}
-	ret := new(ChannelRequest)
-	if err := json.NewDecoder(res.Body).Decode(ret); err != nil {
+	var ret *ChannelRequest
+	if err := json.NewDecoder(res.Body).Decode(&ret); err != nil {
 		return nil, err
 	}
 	return ret, nil
@@ -1779,6 +1977,14 @@ func (r *ChannelService) Insert(appId string, channelrequest *ChannelRequest) *C
 	return c
 }
 
+// Fields allows partial responses to be retrieved.
+// See https://developers.google.com/gdata/docs/2.0/basics#PartialResponse
+// for more information.
+func (c *ChannelInsertCall) Fields(s ...googleapi.Field) *ChannelInsertCall {
+	c.opt_["fields"] = googleapi.CombineFields(s)
+	return c
+}
+
 func (c *ChannelInsertCall) Do() (*AppChannel, error) {
 	var body io.Reader = nil
 	body, err := googleapi.WithoutDataWrapper.JSONReader(c.channelrequest)
@@ -1788,11 +1994,15 @@ func (c *ChannelInsertCall) Do() (*AppChannel, error) {
 	ctype := "application/json"
 	params := make(url.Values)
 	params.Set("alt", "json")
+	if v, ok := c.opt_["fields"]; ok {
+		params.Set("fields", fmt.Sprintf("%v", v))
+	}
 	urls := googleapi.ResolveRelative(c.s.BasePath, "apps/{appId}/channels")
 	urls += "?" + params.Encode()
 	req, _ := http.NewRequest("POST", urls, body)
-	req.URL.Path = strings.Replace(req.URL.Path, "{appId}", url.QueryEscape(c.appId), 1)
-	googleapi.SetOpaque(req.URL)
+	googleapi.Expand(req.URL, map[string]string{
+		"appId": c.appId,
+	})
 	req.Header.Set("Content-Type", ctype)
 	req.Header.Set("User-Agent", "google-api-go-client/0.5")
 	res, err := c.s.client.Do(req)
@@ -1803,8 +2013,8 @@ func (c *ChannelInsertCall) Do() (*AppChannel, error) {
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, err
 	}
-	ret := new(AppChannel)
-	if err := json.NewDecoder(res.Body).Decode(ret); err != nil {
+	var ret *AppChannel
+	if err := json.NewDecoder(res.Body).Decode(&ret); err != nil {
 		return nil, err
 	}
 	return ret, nil
@@ -1849,15 +2059,27 @@ func (r *ChannelService) List(appId string) *ChannelListCall {
 	return c
 }
 
+// Fields allows partial responses to be retrieved.
+// See https://developers.google.com/gdata/docs/2.0/basics#PartialResponse
+// for more information.
+func (c *ChannelListCall) Fields(s ...googleapi.Field) *ChannelListCall {
+	c.opt_["fields"] = googleapi.CombineFields(s)
+	return c
+}
+
 func (c *ChannelListCall) Do() (*ChannelListResp, error) {
 	var body io.Reader = nil
 	params := make(url.Values)
 	params.Set("alt", "json")
+	if v, ok := c.opt_["fields"]; ok {
+		params.Set("fields", fmt.Sprintf("%v", v))
+	}
 	urls := googleapi.ResolveRelative(c.s.BasePath, "apps/{appId}/channels")
 	urls += "?" + params.Encode()
 	req, _ := http.NewRequest("GET", urls, body)
-	req.URL.Path = strings.Replace(req.URL.Path, "{appId}", url.QueryEscape(c.appId), 1)
-	googleapi.SetOpaque(req.URL)
+	googleapi.Expand(req.URL, map[string]string{
+		"appId": c.appId,
+	})
 	req.Header.Set("User-Agent", "google-api-go-client/0.5")
 	res, err := c.s.client.Do(req)
 	if err != nil {
@@ -1867,8 +2089,8 @@ func (c *ChannelListCall) Do() (*ChannelListResp, error) {
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, err
 	}
-	ret := new(ChannelListResp)
-	if err := json.NewDecoder(res.Body).Decode(ret); err != nil {
+	var ret *ChannelListResp
+	if err := json.NewDecoder(res.Body).Decode(&ret); err != nil {
 		return nil, err
 	}
 	return ret, nil
@@ -1907,10 +2129,21 @@ func (r *ChannelService) PublicList() *ChannelPublicListCall {
 	return c
 }
 
+// Fields allows partial responses to be retrieved.
+// See https://developers.google.com/gdata/docs/2.0/basics#PartialResponse
+// for more information.
+func (c *ChannelPublicListCall) Fields(s ...googleapi.Field) *ChannelPublicListCall {
+	c.opt_["fields"] = googleapi.CombineFields(s)
+	return c
+}
+
 func (c *ChannelPublicListCall) Do() (*ChannelListResp, error) {
 	var body io.Reader = nil
 	params := make(url.Values)
 	params.Set("alt", "json")
+	if v, ok := c.opt_["fields"]; ok {
+		params.Set("fields", fmt.Sprintf("%v", v))
+	}
 	urls := googleapi.ResolveRelative(c.s.BasePath, "public/channels")
 	urls += "?" + params.Encode()
 	req, _ := http.NewRequest("GET", urls, body)
@@ -1924,8 +2157,8 @@ func (c *ChannelPublicListCall) Do() (*ChannelListResp, error) {
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, err
 	}
-	ret := new(ChannelListResp)
-	if err := json.NewDecoder(res.Body).Decode(ret); err != nil {
+	var ret *ChannelListResp
+	if err := json.NewDecoder(res.Body).Decode(&ret); err != nil {
 		return nil, err
 	}
 	return ret, nil
@@ -1960,6 +2193,14 @@ func (r *ChannelService) Update(appId string, label string, channelrequest *Chan
 	return c
 }
 
+// Fields allows partial responses to be retrieved.
+// See https://developers.google.com/gdata/docs/2.0/basics#PartialResponse
+// for more information.
+func (c *ChannelUpdateCall) Fields(s ...googleapi.Field) *ChannelUpdateCall {
+	c.opt_["fields"] = googleapi.CombineFields(s)
+	return c
+}
+
 func (c *ChannelUpdateCall) Do() (*AppChannel, error) {
 	var body io.Reader = nil
 	body, err := googleapi.WithoutDataWrapper.JSONReader(c.channelrequest)
@@ -1969,12 +2210,16 @@ func (c *ChannelUpdateCall) Do() (*AppChannel, error) {
 	ctype := "application/json"
 	params := make(url.Values)
 	params.Set("alt", "json")
+	if v, ok := c.opt_["fields"]; ok {
+		params.Set("fields", fmt.Sprintf("%v", v))
+	}
 	urls := googleapi.ResolveRelative(c.s.BasePath, "apps/{appId}/channels/{label}")
 	urls += "?" + params.Encode()
 	req, _ := http.NewRequest("PATCH", urls, body)
-	req.URL.Path = strings.Replace(req.URL.Path, "{appId}", url.QueryEscape(c.appId), 1)
-	req.URL.Path = strings.Replace(req.URL.Path, "{label}", url.QueryEscape(c.label), 1)
-	googleapi.SetOpaque(req.URL)
+	googleapi.Expand(req.URL, map[string]string{
+		"appId": c.appId,
+		"label": c.label,
+	})
 	req.Header.Set("Content-Type", ctype)
 	req.Header.Set("User-Agent", "google-api-go-client/0.5")
 	res, err := c.s.client.Do(req)
@@ -1985,8 +2230,8 @@ func (c *ChannelUpdateCall) Do() (*AppChannel, error) {
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, err
 	}
-	ret := new(AppChannel)
-	if err := json.NewDecoder(res.Body).Decode(ret); err != nil {
+	var ret *AppChannel
+	if err := json.NewDecoder(res.Body).Decode(&ret); err != nil {
 		return nil, err
 	}
 	return ret, nil
@@ -2037,11 +2282,22 @@ func (r *ClientService) History(clientId string) *ClientHistoryCall {
 	return c
 }
 
+// Fields allows partial responses to be retrieved.
+// See https://developers.google.com/gdata/docs/2.0/basics#PartialResponse
+// for more information.
+func (c *ClientHistoryCall) Fields(s ...googleapi.Field) *ClientHistoryCall {
+	c.opt_["fields"] = googleapi.CombineFields(s)
+	return c
+}
+
 func (c *ClientHistoryCall) Do() (*ClientHistoryResp, error) {
 	var body io.Reader = nil
 	params := make(url.Values)
 	params.Set("alt", "json")
 	params.Set("clientId", fmt.Sprintf("%v", c.clientId))
+	if v, ok := c.opt_["fields"]; ok {
+		params.Set("fields", fmt.Sprintf("%v", v))
+	}
 	urls := googleapi.ResolveRelative(c.s.BasePath, "client/history")
 	urls += "?" + params.Encode()
 	req, _ := http.NewRequest("GET", urls, body)
@@ -2055,8 +2311,8 @@ func (c *ClientHistoryCall) Do() (*ClientHistoryResp, error) {
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, err
 	}
-	ret := new(ClientHistoryResp)
-	if err := json.NewDecoder(res.Body).Decode(ret); err != nil {
+	var ret *ClientHistoryResp
+	if err := json.NewDecoder(res.Body).Decode(&ret); err != nil {
 		return nil, err
 	}
 	return ret, nil
@@ -2143,6 +2399,14 @@ func (c *ClientupdateCountCall) Version(version string) *ClientupdateCountCall {
 	return c
 }
 
+// Fields allows partial responses to be retrieved.
+// See https://developers.google.com/gdata/docs/2.0/basics#PartialResponse
+// for more information.
+func (c *ClientupdateCountCall) Fields(s ...googleapi.Field) *ClientupdateCountCall {
+	c.opt_["fields"] = googleapi.CombineFields(s)
+	return c
+}
+
 func (c *ClientupdateCountCall) Do() (*ClientCountResp, error) {
 	var body io.Reader = nil
 	params := make(url.Values)
@@ -2171,6 +2435,9 @@ func (c *ClientupdateCountCall) Do() (*ClientCountResp, error) {
 	if v, ok := c.opt_["version"]; ok {
 		params.Set("version", fmt.Sprintf("%v", v))
 	}
+	if v, ok := c.opt_["fields"]; ok {
+		params.Set("fields", fmt.Sprintf("%v", v))
+	}
 	urls := googleapi.ResolveRelative(c.s.BasePath, "clientupdatecount")
 	urls += "?" + params.Encode()
 	req, _ := http.NewRequest("GET", urls, body)
@@ -2184,8 +2451,8 @@ func (c *ClientupdateCountCall) Do() (*ClientCountResp, error) {
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, err
 	}
-	ret := new(ClientCountResp)
-	if err := json.NewDecoder(res.Body).Decode(ret); err != nil {
+	var ret *ClientCountResp
+	if err := json.NewDecoder(res.Body).Decode(&ret); err != nil {
 		return nil, err
 	}
 	return ret, nil
@@ -2316,6 +2583,14 @@ func (c *ClientupdateListCall) Version(version string) *ClientupdateListCall {
 	return c
 }
 
+// Fields allows partial responses to be retrieved.
+// See https://developers.google.com/gdata/docs/2.0/basics#PartialResponse
+// for more information.
+func (c *ClientupdateListCall) Fields(s ...googleapi.Field) *ClientupdateListCall {
+	c.opt_["fields"] = googleapi.CombineFields(s)
+	return c
+}
+
 func (c *ClientupdateListCall) Do() (*ClientUpdateList, error) {
 	var body io.Reader = nil
 	params := make(url.Values)
@@ -2353,6 +2628,9 @@ func (c *ClientupdateListCall) Do() (*ClientUpdateList, error) {
 	if v, ok := c.opt_["version"]; ok {
 		params.Set("version", fmt.Sprintf("%v", v))
 	}
+	if v, ok := c.opt_["fields"]; ok {
+		params.Set("fields", fmt.Sprintf("%v", v))
+	}
 	urls := googleapi.ResolveRelative(c.s.BasePath, "clientupdates")
 	urls += "?" + params.Encode()
 	req, _ := http.NewRequest("GET", urls, body)
@@ -2366,8 +2644,8 @@ func (c *ClientupdateListCall) Do() (*ClientUpdateList, error) {
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, err
 	}
-	ret := new(ClientUpdateList)
-	if err := json.NewDecoder(res.Body).Decode(ret); err != nil {
+	var ret *ClientUpdateList
+	if err := json.NewDecoder(res.Body).Decode(&ret); err != nil {
 		return nil, err
 	}
 	return ret, nil
@@ -2492,6 +2770,14 @@ func (c *GroupDeleteCall) UpdatesPaused(updatesPaused bool) *GroupDeleteCall {
 	return c
 }
 
+// Fields allows partial responses to be retrieved.
+// See https://developers.google.com/gdata/docs/2.0/basics#PartialResponse
+// for more information.
+func (c *GroupDeleteCall) Fields(s ...googleapi.Field) *GroupDeleteCall {
+	c.opt_["fields"] = googleapi.CombineFields(s)
+	return c
+}
+
 func (c *GroupDeleteCall) Do() (*Group, error) {
 	var body io.Reader = nil
 	params := make(url.Values)
@@ -2517,12 +2803,16 @@ func (c *GroupDeleteCall) Do() (*Group, error) {
 	if v, ok := c.opt_["updatesPaused"]; ok {
 		params.Set("updatesPaused", fmt.Sprintf("%v", v))
 	}
+	if v, ok := c.opt_["fields"]; ok {
+		params.Set("fields", fmt.Sprintf("%v", v))
+	}
 	urls := googleapi.ResolveRelative(c.s.BasePath, "apps/{appId}/groups/{id}")
 	urls += "?" + params.Encode()
 	req, _ := http.NewRequest("DELETE", urls, body)
-	req.URL.Path = strings.Replace(req.URL.Path, "{appId}", url.QueryEscape(c.appId), 1)
-	req.URL.Path = strings.Replace(req.URL.Path, "{id}", url.QueryEscape(c.id), 1)
-	googleapi.SetOpaque(req.URL)
+	googleapi.Expand(req.URL, map[string]string{
+		"appId": c.appId,
+		"id":    c.id,
+	})
 	req.Header.Set("User-Agent", "google-api-go-client/0.5")
 	res, err := c.s.client.Do(req)
 	if err != nil {
@@ -2532,8 +2822,8 @@ func (c *GroupDeleteCall) Do() (*Group, error) {
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, err
 	}
-	ret := new(Group)
-	if err := json.NewDecoder(res.Body).Decode(ret); err != nil {
+	var ret *Group
+	if err := json.NewDecoder(res.Body).Decode(&ret); err != nil {
 		return nil, err
 	}
 	return ret, nil
@@ -2654,6 +2944,14 @@ func (c *GroupGetCall) UpdatesPaused(updatesPaused bool) *GroupGetCall {
 	return c
 }
 
+// Fields allows partial responses to be retrieved.
+// See https://developers.google.com/gdata/docs/2.0/basics#PartialResponse
+// for more information.
+func (c *GroupGetCall) Fields(s ...googleapi.Field) *GroupGetCall {
+	c.opt_["fields"] = googleapi.CombineFields(s)
+	return c
+}
+
 func (c *GroupGetCall) Do() (*Group, error) {
 	var body io.Reader = nil
 	params := make(url.Values)
@@ -2679,12 +2977,16 @@ func (c *GroupGetCall) Do() (*Group, error) {
 	if v, ok := c.opt_["updatesPaused"]; ok {
 		params.Set("updatesPaused", fmt.Sprintf("%v", v))
 	}
+	if v, ok := c.opt_["fields"]; ok {
+		params.Set("fields", fmt.Sprintf("%v", v))
+	}
 	urls := googleapi.ResolveRelative(c.s.BasePath, "apps/{appId}/groups/{id}")
 	urls += "?" + params.Encode()
 	req, _ := http.NewRequest("GET", urls, body)
-	req.URL.Path = strings.Replace(req.URL.Path, "{appId}", url.QueryEscape(c.appId), 1)
-	req.URL.Path = strings.Replace(req.URL.Path, "{id}", url.QueryEscape(c.id), 1)
-	googleapi.SetOpaque(req.URL)
+	googleapi.Expand(req.URL, map[string]string{
+		"appId": c.appId,
+		"id":    c.id,
+	})
 	req.Header.Set("User-Agent", "google-api-go-client/0.5")
 	res, err := c.s.client.Do(req)
 	if err != nil {
@@ -2694,8 +2996,8 @@ func (c *GroupGetCall) Do() (*Group, error) {
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, err
 	}
-	ret := new(Group)
-	if err := json.NewDecoder(res.Body).Decode(ret); err != nil {
+	var ret *Group
+	if err := json.NewDecoder(res.Body).Decode(&ret); err != nil {
 		return nil, err
 	}
 	return ret, nil
@@ -2774,6 +3076,14 @@ func (r *GroupService) Insert(appId string, group *Group) *GroupInsertCall {
 	return c
 }
 
+// Fields allows partial responses to be retrieved.
+// See https://developers.google.com/gdata/docs/2.0/basics#PartialResponse
+// for more information.
+func (c *GroupInsertCall) Fields(s ...googleapi.Field) *GroupInsertCall {
+	c.opt_["fields"] = googleapi.CombineFields(s)
+	return c
+}
+
 func (c *GroupInsertCall) Do() (*Group, error) {
 	var body io.Reader = nil
 	body, err := googleapi.WithoutDataWrapper.JSONReader(c.group)
@@ -2783,11 +3093,15 @@ func (c *GroupInsertCall) Do() (*Group, error) {
 	ctype := "application/json"
 	params := make(url.Values)
 	params.Set("alt", "json")
+	if v, ok := c.opt_["fields"]; ok {
+		params.Set("fields", fmt.Sprintf("%v", v))
+	}
 	urls := googleapi.ResolveRelative(c.s.BasePath, "apps/{appId}/groups")
 	urls += "?" + params.Encode()
 	req, _ := http.NewRequest("POST", urls, body)
-	req.URL.Path = strings.Replace(req.URL.Path, "{appId}", url.QueryEscape(c.appId), 1)
-	googleapi.SetOpaque(req.URL)
+	googleapi.Expand(req.URL, map[string]string{
+		"appId": c.appId,
+	})
 	req.Header.Set("Content-Type", ctype)
 	req.Header.Set("User-Agent", "google-api-go-client/0.5")
 	res, err := c.s.client.Do(req)
@@ -2798,8 +3112,8 @@ func (c *GroupInsertCall) Do() (*Group, error) {
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, err
 	}
-	ret := new(Group)
-	if err := json.NewDecoder(res.Body).Decode(ret); err != nil {
+	var ret *Group
+	if err := json.NewDecoder(res.Body).Decode(&ret); err != nil {
 		return nil, err
 	}
 	return ret, nil
@@ -2850,6 +3164,14 @@ func (c *GroupListCall) Limit(limit int64) *GroupListCall {
 	return c
 }
 
+// Fields allows partial responses to be retrieved.
+// See https://developers.google.com/gdata/docs/2.0/basics#PartialResponse
+// for more information.
+func (c *GroupListCall) Fields(s ...googleapi.Field) *GroupListCall {
+	c.opt_["fields"] = googleapi.CombineFields(s)
+	return c
+}
+
 func (c *GroupListCall) Do() (*GroupList, error) {
 	var body io.Reader = nil
 	params := make(url.Values)
@@ -2857,11 +3179,15 @@ func (c *GroupListCall) Do() (*GroupList, error) {
 	if v, ok := c.opt_["limit"]; ok {
 		params.Set("limit", fmt.Sprintf("%v", v))
 	}
+	if v, ok := c.opt_["fields"]; ok {
+		params.Set("fields", fmt.Sprintf("%v", v))
+	}
 	urls := googleapi.ResolveRelative(c.s.BasePath, "apps/{appId}/groups")
 	urls += "?" + params.Encode()
 	req, _ := http.NewRequest("GET", urls, body)
-	req.URL.Path = strings.Replace(req.URL.Path, "{appId}", url.QueryEscape(c.appId), 1)
-	googleapi.SetOpaque(req.URL)
+	googleapi.Expand(req.URL, map[string]string{
+		"appId": c.appId,
+	})
 	req.Header.Set("User-Agent", "google-api-go-client/0.5")
 	res, err := c.s.client.Do(req)
 	if err != nil {
@@ -2871,8 +3197,8 @@ func (c *GroupListCall) Do() (*GroupList, error) {
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, err
 	}
-	ret := new(GroupList)
-	if err := json.NewDecoder(res.Body).Decode(ret); err != nil {
+	var ret *GroupList
+	if err := json.NewDecoder(res.Body).Decode(&ret); err != nil {
 		return nil, err
 	}
 	return ret, nil
@@ -2923,6 +3249,14 @@ func (r *GroupService) Patch(appId string, id string, group *Group) *GroupPatchC
 	return c
 }
 
+// Fields allows partial responses to be retrieved.
+// See https://developers.google.com/gdata/docs/2.0/basics#PartialResponse
+// for more information.
+func (c *GroupPatchCall) Fields(s ...googleapi.Field) *GroupPatchCall {
+	c.opt_["fields"] = googleapi.CombineFields(s)
+	return c
+}
+
 func (c *GroupPatchCall) Do() (*Group, error) {
 	var body io.Reader = nil
 	body, err := googleapi.WithoutDataWrapper.JSONReader(c.group)
@@ -2932,12 +3266,16 @@ func (c *GroupPatchCall) Do() (*Group, error) {
 	ctype := "application/json"
 	params := make(url.Values)
 	params.Set("alt", "json")
+	if v, ok := c.opt_["fields"]; ok {
+		params.Set("fields", fmt.Sprintf("%v", v))
+	}
 	urls := googleapi.ResolveRelative(c.s.BasePath, "apps/{appId}/groups/{id}")
 	urls += "?" + params.Encode()
 	req, _ := http.NewRequest("PATCH", urls, body)
-	req.URL.Path = strings.Replace(req.URL.Path, "{appId}", url.QueryEscape(c.appId), 1)
-	req.URL.Path = strings.Replace(req.URL.Path, "{id}", url.QueryEscape(c.id), 1)
-	googleapi.SetOpaque(req.URL)
+	googleapi.Expand(req.URL, map[string]string{
+		"appId": c.appId,
+		"id":    c.id,
+	})
 	req.Header.Set("Content-Type", ctype)
 	req.Header.Set("User-Agent", "google-api-go-client/0.5")
 	res, err := c.s.client.Do(req)
@@ -2948,8 +3286,8 @@ func (c *GroupPatchCall) Do() (*Group, error) {
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, err
 	}
-	ret := new(Group)
-	if err := json.NewDecoder(res.Body).Decode(ret); err != nil {
+	var ret *Group
+	if err := json.NewDecoder(res.Body).Decode(&ret); err != nil {
 		return nil, err
 	}
 	return ret, nil
@@ -3003,6 +3341,14 @@ func (r *GroupService) Update(appId string, id string, group *Group) *GroupUpdat
 	return c
 }
 
+// Fields allows partial responses to be retrieved.
+// See https://developers.google.com/gdata/docs/2.0/basics#PartialResponse
+// for more information.
+func (c *GroupUpdateCall) Fields(s ...googleapi.Field) *GroupUpdateCall {
+	c.opt_["fields"] = googleapi.CombineFields(s)
+	return c
+}
+
 func (c *GroupUpdateCall) Do() (*Group, error) {
 	var body io.Reader = nil
 	body, err := googleapi.WithoutDataWrapper.JSONReader(c.group)
@@ -3012,12 +3358,16 @@ func (c *GroupUpdateCall) Do() (*Group, error) {
 	ctype := "application/json"
 	params := make(url.Values)
 	params.Set("alt", "json")
+	if v, ok := c.opt_["fields"]; ok {
+		params.Set("fields", fmt.Sprintf("%v", v))
+	}
 	urls := googleapi.ResolveRelative(c.s.BasePath, "apps/{appId}/groups/{id}")
 	urls += "?" + params.Encode()
 	req, _ := http.NewRequest("PATCH", urls, body)
-	req.URL.Path = strings.Replace(req.URL.Path, "{appId}", url.QueryEscape(c.appId), 1)
-	req.URL.Path = strings.Replace(req.URL.Path, "{id}", url.QueryEscape(c.id), 1)
-	googleapi.SetOpaque(req.URL)
+	googleapi.Expand(req.URL, map[string]string{
+		"appId": c.appId,
+		"id":    c.id,
+	})
 	req.Header.Set("Content-Type", ctype)
 	req.Header.Set("User-Agent", "google-api-go-client/0.5")
 	res, err := c.s.client.Do(req)
@@ -3028,8 +3378,8 @@ func (c *GroupUpdateCall) Do() (*Group, error) {
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, err
 	}
-	ret := new(Group)
-	if err := json.NewDecoder(res.Body).Decode(ret); err != nil {
+	var ret *Group
+	if err := json.NewDecoder(res.Body).Decode(&ret); err != nil {
 		return nil, err
 	}
 	return ret, nil
@@ -3098,6 +3448,14 @@ func (c *GroupRequestsEventsRollupCall) Versions(versions string) *GroupRequests
 	return c
 }
 
+// Fields allows partial responses to be retrieved.
+// See https://developers.google.com/gdata/docs/2.0/basics#PartialResponse
+// for more information.
+func (c *GroupRequestsEventsRollupCall) Fields(s ...googleapi.Field) *GroupRequestsEventsRollupCall {
+	c.opt_["fields"] = googleapi.CombineFields(s)
+	return c
+}
+
 func (c *GroupRequestsEventsRollupCall) Do() (*GroupRequestsRollup, error) {
 	var body io.Reader = nil
 	params := make(url.Values)
@@ -3108,14 +3466,18 @@ func (c *GroupRequestsEventsRollupCall) Do() (*GroupRequestsRollup, error) {
 	if v, ok := c.opt_["versions"]; ok {
 		params.Set("versions", fmt.Sprintf("%v", v))
 	}
+	if v, ok := c.opt_["fields"]; ok {
+		params.Set("fields", fmt.Sprintf("%v", v))
+	}
 	urls := googleapi.ResolveRelative(c.s.BasePath, "apps/{appId}/groups/{groupId}/requests/events/{dateStart}/{dateEnd}")
 	urls += "?" + params.Encode()
 	req, _ := http.NewRequest("GET", urls, body)
-	req.URL.Path = strings.Replace(req.URL.Path, "{appId}", url.QueryEscape(c.appId), 1)
-	req.URL.Path = strings.Replace(req.URL.Path, "{groupId}", url.QueryEscape(c.groupId), 1)
-	req.URL.Path = strings.Replace(req.URL.Path, "{dateStart}", strconv.FormatInt(c.dateStart, 10), 1)
-	req.URL.Path = strings.Replace(req.URL.Path, "{dateEnd}", strconv.FormatInt(c.dateEnd, 10), 1)
-	googleapi.SetOpaque(req.URL)
+	googleapi.Expand(req.URL, map[string]string{
+		"appId":     c.appId,
+		"groupId":   c.groupId,
+		"dateStart": strconv.FormatInt(c.dateStart, 10),
+		"dateEnd":   strconv.FormatInt(c.dateEnd, 10),
+	})
 	req.Header.Set("User-Agent", "google-api-go-client/0.5")
 	res, err := c.s.client.Do(req)
 	if err != nil {
@@ -3125,8 +3487,8 @@ func (c *GroupRequestsEventsRollupCall) Do() (*GroupRequestsRollup, error) {
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, err
 	}
-	ret := new(GroupRequestsRollup)
-	if err := json.NewDecoder(res.Body).Decode(ret); err != nil {
+	var ret *GroupRequestsRollup
+	if err := json.NewDecoder(res.Body).Decode(&ret); err != nil {
 		return nil, err
 	}
 	return ret, nil
@@ -3214,6 +3576,14 @@ func (c *GroupRequestsVersionsRollupCall) Versions(versions string) *GroupReques
 	return c
 }
 
+// Fields allows partial responses to be retrieved.
+// See https://developers.google.com/gdata/docs/2.0/basics#PartialResponse
+// for more information.
+func (c *GroupRequestsVersionsRollupCall) Fields(s ...googleapi.Field) *GroupRequestsVersionsRollupCall {
+	c.opt_["fields"] = googleapi.CombineFields(s)
+	return c
+}
+
 func (c *GroupRequestsVersionsRollupCall) Do() (*GroupRequestsRollup, error) {
 	var body io.Reader = nil
 	params := make(url.Values)
@@ -3224,14 +3594,18 @@ func (c *GroupRequestsVersionsRollupCall) Do() (*GroupRequestsRollup, error) {
 	if v, ok := c.opt_["versions"]; ok {
 		params.Set("versions", fmt.Sprintf("%v", v))
 	}
+	if v, ok := c.opt_["fields"]; ok {
+		params.Set("fields", fmt.Sprintf("%v", v))
+	}
 	urls := googleapi.ResolveRelative(c.s.BasePath, "apps/{appId}/groups/{groupId}/requests/versions/{dateStart}/{dateEnd}")
 	urls += "?" + params.Encode()
 	req, _ := http.NewRequest("GET", urls, body)
-	req.URL.Path = strings.Replace(req.URL.Path, "{appId}", url.QueryEscape(c.appId), 1)
-	req.URL.Path = strings.Replace(req.URL.Path, "{groupId}", url.QueryEscape(c.groupId), 1)
-	req.URL.Path = strings.Replace(req.URL.Path, "{dateStart}", strconv.FormatInt(c.dateStart, 10), 1)
-	req.URL.Path = strings.Replace(req.URL.Path, "{dateEnd}", strconv.FormatInt(c.dateEnd, 10), 1)
-	googleapi.SetOpaque(req.URL)
+	googleapi.Expand(req.URL, map[string]string{
+		"appId":     c.appId,
+		"groupId":   c.groupId,
+		"dateStart": strconv.FormatInt(c.dateStart, 10),
+		"dateEnd":   strconv.FormatInt(c.dateEnd, 10),
+	})
 	req.Header.Set("User-Agent", "google-api-go-client/0.5")
 	res, err := c.s.client.Do(req)
 	if err != nil {
@@ -3241,8 +3615,8 @@ func (c *GroupRequestsVersionsRollupCall) Do() (*GroupRequestsRollup, error) {
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, err
 	}
-	ret := new(GroupRequestsRollup)
-	if err := json.NewDecoder(res.Body).Decode(ret); err != nil {
+	var ret *GroupRequestsRollup
+	if err := json.NewDecoder(res.Body).Decode(&ret); err != nil {
 		return nil, err
 	}
 	return ret, nil
@@ -3324,6 +3698,14 @@ func (c *UpstreamDeleteCall) Url(url string) *UpstreamDeleteCall {
 	return c
 }
 
+// Fields allows partial responses to be retrieved.
+// See https://developers.google.com/gdata/docs/2.0/basics#PartialResponse
+// for more information.
+func (c *UpstreamDeleteCall) Fields(s ...googleapi.Field) *UpstreamDeleteCall {
+	c.opt_["fields"] = googleapi.CombineFields(s)
+	return c
+}
+
 func (c *UpstreamDeleteCall) Do() (*Upstream, error) {
 	var body io.Reader = nil
 	params := make(url.Values)
@@ -3334,11 +3716,15 @@ func (c *UpstreamDeleteCall) Do() (*Upstream, error) {
 	if v, ok := c.opt_["url"]; ok {
 		params.Set("url", fmt.Sprintf("%v", v))
 	}
+	if v, ok := c.opt_["fields"]; ok {
+		params.Set("fields", fmt.Sprintf("%v", v))
+	}
 	urls := googleapi.ResolveRelative(c.s.BasePath, "upstream/{id}")
 	urls += "?" + params.Encode()
 	req, _ := http.NewRequest("DELETE", urls, body)
-	req.URL.Path = strings.Replace(req.URL.Path, "{id}", strconv.FormatInt(c.id, 10), 1)
-	googleapi.SetOpaque(req.URL)
+	googleapi.Expand(req.URL, map[string]string{
+		"id": strconv.FormatInt(c.id, 10),
+	})
 	req.Header.Set("User-Agent", "google-api-go-client/0.5")
 	res, err := c.s.client.Do(req)
 	if err != nil {
@@ -3348,8 +3734,8 @@ func (c *UpstreamDeleteCall) Do() (*Upstream, error) {
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, err
 	}
-	ret := new(Upstream)
-	if err := json.NewDecoder(res.Body).Decode(ret); err != nil {
+	var ret *Upstream
+	if err := json.NewDecoder(res.Body).Decode(&ret); err != nil {
 		return nil, err
 	}
 	return ret, nil
@@ -3399,6 +3785,14 @@ func (r *UpstreamService) Insert(upstream *Upstream) *UpstreamInsertCall {
 	return c
 }
 
+// Fields allows partial responses to be retrieved.
+// See https://developers.google.com/gdata/docs/2.0/basics#PartialResponse
+// for more information.
+func (c *UpstreamInsertCall) Fields(s ...googleapi.Field) *UpstreamInsertCall {
+	c.opt_["fields"] = googleapi.CombineFields(s)
+	return c
+}
+
 func (c *UpstreamInsertCall) Do() (*Upstream, error) {
 	var body io.Reader = nil
 	body, err := googleapi.WithoutDataWrapper.JSONReader(c.upstream)
@@ -3408,6 +3802,9 @@ func (c *UpstreamInsertCall) Do() (*Upstream, error) {
 	ctype := "application/json"
 	params := make(url.Values)
 	params.Set("alt", "json")
+	if v, ok := c.opt_["fields"]; ok {
+		params.Set("fields", fmt.Sprintf("%v", v))
+	}
 	urls := googleapi.ResolveRelative(c.s.BasePath, "upstream")
 	urls += "?" + params.Encode()
 	req, _ := http.NewRequest("POST", urls, body)
@@ -3422,8 +3819,8 @@ func (c *UpstreamInsertCall) Do() (*Upstream, error) {
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, err
 	}
-	ret := new(Upstream)
-	if err := json.NewDecoder(res.Body).Decode(ret); err != nil {
+	var ret *Upstream
+	if err := json.NewDecoder(res.Body).Decode(&ret); err != nil {
 		return nil, err
 	}
 	return ret, nil
@@ -3456,10 +3853,21 @@ func (r *UpstreamService) List() *UpstreamListCall {
 	return c
 }
 
+// Fields allows partial responses to be retrieved.
+// See https://developers.google.com/gdata/docs/2.0/basics#PartialResponse
+// for more information.
+func (c *UpstreamListCall) Fields(s ...googleapi.Field) *UpstreamListCall {
+	c.opt_["fields"] = googleapi.CombineFields(s)
+	return c
+}
+
 func (c *UpstreamListCall) Do() (*UpstreamListResp, error) {
 	var body io.Reader = nil
 	params := make(url.Values)
 	params.Set("alt", "json")
+	if v, ok := c.opt_["fields"]; ok {
+		params.Set("fields", fmt.Sprintf("%v", v))
+	}
 	urls := googleapi.ResolveRelative(c.s.BasePath, "upstream")
 	urls += "?" + params.Encode()
 	req, _ := http.NewRequest("GET", urls, body)
@@ -3473,8 +3881,8 @@ func (c *UpstreamListCall) Do() (*UpstreamListResp, error) {
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, err
 	}
-	ret := new(UpstreamListResp)
-	if err := json.NewDecoder(res.Body).Decode(ret); err != nil {
+	var ret *UpstreamListResp
+	if err := json.NewDecoder(res.Body).Decode(&ret); err != nil {
 		return nil, err
 	}
 	return ret, nil
@@ -3503,10 +3911,21 @@ func (r *UpstreamService) Sync() *UpstreamSyncCall {
 	return c
 }
 
+// Fields allows partial responses to be retrieved.
+// See https://developers.google.com/gdata/docs/2.0/basics#PartialResponse
+// for more information.
+func (c *UpstreamSyncCall) Fields(s ...googleapi.Field) *UpstreamSyncCall {
+	c.opt_["fields"] = googleapi.CombineFields(s)
+	return c
+}
+
 func (c *UpstreamSyncCall) Do() (*UpstreamSyncResp, error) {
 	var body io.Reader = nil
 	params := make(url.Values)
 	params.Set("alt", "json")
+	if v, ok := c.opt_["fields"]; ok {
+		params.Set("fields", fmt.Sprintf("%v", v))
+	}
 	urls := googleapi.ResolveRelative(c.s.BasePath, "upstream/sync")
 	urls += "?" + params.Encode()
 	req, _ := http.NewRequest("POST", urls, body)
@@ -3520,8 +3939,8 @@ func (c *UpstreamSyncCall) Do() (*UpstreamSyncResp, error) {
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, err
 	}
-	ret := new(UpstreamSyncResp)
-	if err := json.NewDecoder(res.Body).Decode(ret); err != nil {
+	var ret *UpstreamSyncResp
+	if err := json.NewDecoder(res.Body).Decode(&ret); err != nil {
 		return nil, err
 	}
 	return ret, nil
@@ -3554,6 +3973,14 @@ func (r *UpstreamService) Update(id int64, upstream *Upstream) *UpstreamUpdateCa
 	return c
 }
 
+// Fields allows partial responses to be retrieved.
+// See https://developers.google.com/gdata/docs/2.0/basics#PartialResponse
+// for more information.
+func (c *UpstreamUpdateCall) Fields(s ...googleapi.Field) *UpstreamUpdateCall {
+	c.opt_["fields"] = googleapi.CombineFields(s)
+	return c
+}
+
 func (c *UpstreamUpdateCall) Do() (*Upstream, error) {
 	var body io.Reader = nil
 	body, err := googleapi.WithoutDataWrapper.JSONReader(c.upstream)
@@ -3563,11 +3990,15 @@ func (c *UpstreamUpdateCall) Do() (*Upstream, error) {
 	ctype := "application/json"
 	params := make(url.Values)
 	params.Set("alt", "json")
+	if v, ok := c.opt_["fields"]; ok {
+		params.Set("fields", fmt.Sprintf("%v", v))
+	}
 	urls := googleapi.ResolveRelative(c.s.BasePath, "upstream/{id}")
 	urls += "?" + params.Encode()
 	req, _ := http.NewRequest("PUT", urls, body)
-	req.URL.Path = strings.Replace(req.URL.Path, "{id}", strconv.FormatInt(c.id, 10), 1)
-	googleapi.SetOpaque(req.URL)
+	googleapi.Expand(req.URL, map[string]string{
+		"id": strconv.FormatInt(c.id, 10),
+	})
 	req.Header.Set("Content-Type", ctype)
 	req.Header.Set("User-Agent", "google-api-go-client/0.5")
 	res, err := c.s.client.Do(req)
@@ -3578,8 +4009,8 @@ func (c *UpstreamUpdateCall) Do() (*Upstream, error) {
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, err
 	}
-	ret := new(Upstream)
-	if err := json.NewDecoder(res.Body).Decode(ret); err != nil {
+	var ret *Upstream
+	if err := json.NewDecoder(res.Body).Decode(&ret); err != nil {
 		return nil, err
 	}
 	return ret, nil
@@ -3623,10 +4054,21 @@ func (r *UtilService) Uuid() *UtilUuidCall {
 	return c
 }
 
+// Fields allows partial responses to be retrieved.
+// See https://developers.google.com/gdata/docs/2.0/basics#PartialResponse
+// for more information.
+func (c *UtilUuidCall) Fields(s ...googleapi.Field) *UtilUuidCall {
+	c.opt_["fields"] = googleapi.CombineFields(s)
+	return c
+}
+
 func (c *UtilUuidCall) Do() (*GenerateUuidResp, error) {
 	var body io.Reader = nil
 	params := make(url.Values)
 	params.Set("alt", "json")
+	if v, ok := c.opt_["fields"]; ok {
+		params.Set("fields", fmt.Sprintf("%v", v))
+	}
 	urls := googleapi.ResolveRelative(c.s.BasePath, "util/uuid")
 	urls += "?" + params.Encode()
 	req, _ := http.NewRequest("GET", urls, body)
@@ -3640,8 +4082,8 @@ func (c *UtilUuidCall) Do() (*GenerateUuidResp, error) {
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, err
 	}
-	ret := new(GenerateUuidResp)
-	if err := json.NewDecoder(res.Body).Decode(ret); err != nil {
+	var ret *GenerateUuidResp
+	if err := json.NewDecoder(res.Body).Decode(&ret); err != nil {
 		return nil, err
 	}
 	return ret, nil

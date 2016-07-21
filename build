@@ -1,13 +1,5 @@
 #!/bin/sh -e
 
-export GOPATH=${PWD}/Godeps/_workspace
-export GOBIN=${PWD}/bin
-
-if [ ! -h $GOPATH/src/github.com/coreos/updateservicectl ]; then
-    mkdir -p $GOPATH/src/github.com/coreos/
-    ln -s ${PWD} $GOPATH/src/github.com/coreos/updateservicectl
-fi
-
-eval $(go env)
-
-go install github.com/coreos/updateservicectl
+export GO15VENDOREXPERIMENT=1
+export CGO_ENABLED=0
+go build -a -ldflags '-w' -o bin/updateservicectl github.com/coreos/updateservicectl

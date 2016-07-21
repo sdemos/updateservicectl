@@ -15,8 +15,8 @@ import (
 	"text/tabwriter"
 	"time"
 
-	"github.com/coreos/updateservicectl/Godeps/_workspace/src/code.google.com/p/go-uuid/uuid"
-	"github.com/coreos/updateservicectl/Godeps/_workspace/src/github.com/coreos/go-omaha/omaha"
+	"github.com/coreos/go-omaha/omaha"
+	"github.com/pborman/uuid"
 
 	"github.com/coreos/updateservicectl/client/update/v1"
 )
@@ -30,10 +30,10 @@ var (
 		clientId string
 	}
 	cmdWatch = &Command{
-		Name:        "watch",
-		Usage:       "[OPTION]... <cmd> <args>",
+		Name:    "watch",
+		Usage:   "[OPTION]... <cmd> <args>",
 		Summary: `Watch for app versions and exec a given command.`,
-		Run:         watch,
+		Run:     watch,
 	}
 )
 
